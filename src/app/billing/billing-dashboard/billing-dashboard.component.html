@@ -1,0 +1,101 @@
+<app-navbar></app-navbar>
+<div class="container-fluid pt-4 px-4">
+  <h4>Panel de Facturación</h4>
+
+  <div class="mb-3">
+    <label for="filterPaymentStatus" class="form-label">Filtrar por Estatus de Pago:</label>
+    <select id="filterPaymentStatus" class="form-select" [(ngModel)]="selectedPaymentStatus" (change)="filterByPaymentStatus()">
+      <option value="">Todos</option>
+      <option value="Pendiente">Pendiente</option>
+      <option value="Pagado">Pagado</option>
+      <option value="Atrasado">Atrasado</option>
+    </select>
+  </div>
+
+  <!-- Tabla de Trámites -->
+  <div class="table-responsive mt-4">
+    <table class="table table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col" *ngIf="columns['number']">No.</th>
+          <th scope="col" *ngIf="columns['id']">Id Trámite</th>
+          <th scope="col" *ngIf="columns['client_rfc']">RFC Cliente</th>
+          <th scope="col" *ngIf="columns['email']">Email</th>
+          <th scope="col" *ngIf="columns['phone_number']">Teléfono</th>
+          <th scope="col" *ngIf="columns['distinctive_denomination']">Denominación Distintiva</th>
+          <th scope="col" *ngIf="columns['generic_name']">Nombre Genérico</th>
+          <th scope="col" *ngIf="columns['product_manufacturer']">Fabricante</th>
+          <th scope="col" *ngIf="columns['service_name']">Servicio</th>
+          <th scope="col" *ngIf="columns['input_value']">Valor</th>
+          <th scope="col" *ngIf="columns['type_description']">Descripción Tipo</th>
+          <th scope="col" *ngIf="columns['class_name']">Clase</th>
+          <th scope="col" *ngIf="columns['start_date']">Fecha Inicio</th>
+          <th scope="col" *ngIf="columns['end_date']">Fecha Fin</th>
+          <th scope="col" *ngIf="columns['billing']">Número de Facturación</th>
+          <th scope="col" *ngIf="columns['payment_status']">Estatus de Pago</th>
+          <th scope="col" *ngIf="columns['payment_date']">Fecha de Pago</th>
+          <th scope="col" *ngIf="columns['collection_notes']">Notas de Cobranza</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tramite of filteredTramites" [ngClass]="tramite.rowColor">
+          <td *ngIf="columns['number']">{{ tramite.number }}</td>
+          <td *ngIf="columns['id']">{{ tramite.id }}</td>
+          <td *ngIf="columns['client_rfc']">{{ tramite.client_rfc }}</td>
+          <td *ngIf="columns['email']">{{ tramite.client.email }}</td>
+          <td *ngIf="columns['phone_number']">{{ tramite.client.phone_number }}</td>
+          <td *ngIf="columns['distinctive_denomination']">{{ tramite.distinctive_denomination }}</td>
+          <td *ngIf="columns['generic_name']">{{ tramite.generic_name }}</td>
+          <td *ngIf="columns['product_manufacturer']">{{ tramite.product_manufacturer }}</td>
+          <td *ngIf="columns['service_name']">{{ tramite.service_name }}</td>
+          <td *ngIf="columns['input_value']">{{ tramite.input_value }}</td>
+          <td *ngIf="columns['type_description']">{{ tramite.type_description }}</td>
+          <td *ngIf="columns['class_name']">{{ tramite.class_name }}</td>
+          <td *ngIf="columns['start_date']">{{ tramite.start_date }}</td>
+          <td *ngIf="columns['end_date']">{{ tramite.end_date }}</td>
+          <td *ngIf="columns['billing']">{{ tramite.billing }}</td>
+          <td *ngIf="columns['payment_status']">{{ tramite.payment_status }}</td>
+          <td *ngIf="columns['payment_date']">{{ tramite.payment_date | date }}</td>
+          <td *ngIf="columns['collection_notes']">{{ tramite.collection_notes }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Formulario para actualizar facturación -->
+  <div class="mt-5 bg-form rounded h-100 p-4">
+    <h6 class="mb-4">Actualizar Facturación</h6>
+    <form [formGroup]="facturacionForm" (ngSubmit)="updateFacturacion()">
+      <div class="mb-3">
+        <label for="tramiteId" class="form-label">ID del Trámite</label>
+        <input formControlName="tramite_id" type="text" class="form-control" id="tramiteId" required />
+      </div>
+
+      <div class="mb-3">
+        <label for="billing" class="form-label">Número de Facturación</label>
+        <input formControlName="billing" type="text" class="form-control" id="billing" required />
+      </div>
+
+      <div class="mb-3">
+        <label for="paymentStatus" class="form-label">Estatus del Pago</label>
+        <select formControlName="payment_status" class="form-select" id="paymentStatus" required>
+          <option value="Pendiente">Pendiente</option>
+          <option value="Pagado">Pagado</option>
+          <option value="Atrasado">Atrasado</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="paymentDate" class="form-label">Fecha de Pago</label>
+        <input formControlName="payment_date" type="date" class="form-control" id="paymentDate" required />
+      </div>
+
+      <div class="mb-3">
+        <label for="collectionNotes" class="form-label">Otras Notas de Cobranza</label>
+        <textarea formControlName="collection_notes" class="form-control" id="collectionNotes" rows="3"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Actualizar Facturación</button>
+    </form>
+  </div>
+</div>

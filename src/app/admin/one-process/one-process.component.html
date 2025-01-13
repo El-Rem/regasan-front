@@ -1,0 +1,75 @@
+<app-navbar></app-navbar>
+<div class="container-fluid pt-4 px-4">
+  <h4>Detalle del Trámite</h4>
+  <button class="btn btn-secondary mb-3" (click)="goBack()">Regresar</button>
+
+  <!-- Indicador de carga -->
+  <div *ngIf="loading" class="text-center">
+    <p>Cargando...</p>
+  </div>
+
+  <!-- Mostrar errores -->
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <!-- Mostrar datos cuando estén disponibles -->
+  <div *ngIf="!loading && !error">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>ID Trámite</th>
+          <th>RFC Cliente</th>
+          <th>Email</th>
+          <th>Teléfono</th>
+          <th>Denominación Distintiva</th>
+          <th>Nombre Genérico</th>
+          <th>Fabricante</th>
+          <th>Servicio</th>
+          <th>Insumo</th>
+          <th>Descripción Tipo</th>
+          <th>Clase</th>
+          <th>Fecha Inicio</th>
+          <th>Fecha Fin</th>
+          <th>Estatus</th>
+          <th>Datos Técnicos</th>
+          <th>% Completado</th>
+          <th>Fecha Entrada COFEPRIS</th>
+          <th>Estatus COFEPRIS</th>
+          <th>Número de Entrada COFEPRIS</th>
+          <th>Consultor Asignado</th>
+          <th>Información Adicional</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ tramite.number }}</td>
+          <td>{{ tramite.id }}</td>
+          <td>{{ tramite.client_rfc }}</td>
+          <td>{{ tramite.client?.email }}</td>
+          <td>{{ tramite.client?.phone_number }}</td>
+          <td>{{ tramite.distinctive_denomination }}</td>
+          <td>{{ tramite.generic_name }}</td>
+          <td>{{ tramite.product_manufacturer }}</td>
+          <td>{{ tramite.service_name }}</td>
+          <td>{{ tramite.input_value }}</td>
+          <td>{{ tramite.type_description }}</td>
+          <td>{{ tramite.class_name }}</td>
+          <td>{{ tramite.start_date }}</td>
+          <td>{{ tramite.end_date }}</td>
+          <td>{{ tramite.status }}</td>
+          <td>
+            <pre>{{ tramite.technical_data }}</pre>
+          </td>
+          <td>{{ tramite.completion_percentage }}</td>
+          <td>{{ tramite.cofepris_entry_date }}</td>
+          <td>{{ tramite.cofepris_status }}</td>
+          <td>{{ tramite.cofepris_entry_number }}</td>
+          <td>{{ tramite.assigned_consultant }}</td>
+          <td>{{ tramite.additional_information }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

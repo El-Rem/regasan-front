@@ -1,0 +1,86 @@
+<app-navbar></app-navbar>
+<div class="container-fluid pt-4 px-4">
+  <h4>Todos los Trámites</h4>
+
+  <div class="table-responsive mt-4">
+    <table class="table table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col" *ngIf="columns['number']">
+            <a (click)="sortBy('number')" class="text-decoration-none text-white">
+              No.<i [ngClass]="getSortIcon('number')"></i>
+            </a>
+          </th>
+          <th scope="col" *ngIf="columns['id']">
+            <a (click)="sortBy('id')" class="text-decoration-none text-white">
+              ID Trámite <i [ngClass]="getSortIcon('id')"></i>
+            </a>
+          </th>
+          <th scope="col" *ngIf="columns['business_name']">
+            <a (click)="sortBy('business_name')" class="text-decoration-none text-white">
+              Nombre <i [ngClass]="getSortIcon('business_name')"></i>
+            </a>
+          </th>
+          <th scope="col" *ngIf="columns['client_rfc']">
+            <a (click)="sortBy('client_rfc')" class="text-decoration-none text-white">
+              RFC Cliente <i [ngClass]="getSortIcon('client_rfc')"></i>
+            </a>
+          </th>
+          <th scope="col" *ngIf="columns['email']">
+            <a (click)="sortBy('email')" class="text-decoration-none text-white">
+              Email <i [ngClass]="getSortIcon('email')"></i>
+            </a>
+          </th>
+          <th scope="col" *ngIf="columns['phone_number']">
+            <a (click)="sortBy('phone_number')" class="text-decoration-none text-white">
+              Teléfono <i [ngClass]="getSortIcon('phone_number')"></i>
+            </a>
+          </th>
+          <th scope="col" *ngIf="columns['distinctive_denomination']">
+            <a (click)="sortBy('distinctive_denomination')" class="text-decoration-none text-white">
+              Denominación Distintiva <i [ngClass]="getSortIcon('distinctive_denomination')"></i>
+            </a>
+          </th>
+          <th scope="col" *ngIf="columns['generic_name']">
+            <a (click)="sortBy('generic_name')" class="text-decoration-none text-white">
+              Nombre Genérico <i [ngClass]="getSortIcon('generic_name')"></i>
+            </a>
+          </th>
+          <th scope="col" *ngIf="columns['payment_status']">
+            <a (click)="sortBy('payment_status')" class="text-decoration-none text-white">
+              Estatus de Pago <i [ngClass]="getSortIcon('payment_status')"></i>
+            </a>
+          </th>
+          <th scope="col" *ngIf="columns['payment_date']">
+            <a (click)="sortBy('payment_date')" class="text-decoration-none text-white">
+              Fecha de Pago <i [ngClass]="getSortIcon('payment_date')"></i>
+            </a>
+          </th>
+          <th scope="col" *ngIf="columns['end_date']">
+            <a (click)="sortBy('end_date')" class="text-decoration-none text-white">
+              Fecha de Vencimiento <i [ngClass]="getSortIcon('end_date')"></i>
+            </a>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tramite of tramites" [ngClass]="tramite.rowColor">
+          <td *ngIf="columns['number']">{{ tramite.number }}</td>
+          <td *ngIf="columns['id']">{{ tramite.id }}</td>
+          <td *ngIf="columns['business_name']">{{ tramite.client?.business_name }}</td>
+          <td *ngIf="columns['client_rfc']">{{ tramite.client_rfc }}</td>
+          <td *ngIf="columns['email']">{{ tramite.client?.email }}</td>
+          <td *ngIf="columns['phone_number']">{{ tramite.client?.phone_number }}</td>
+          <td *ngIf="columns['distinctive_denomination']">{{ tramite.distinctive_denomination }}</td>
+          <td *ngIf="columns['generic_name']">{{ tramite.generic_name }}</td>
+          <td *ngIf="columns['payment_status']">{{ tramite.payment_status }}</td>
+          <td *ngIf="columns['payment_date']">{{ tramite.payment_date | date }}</td>
+          <td *ngIf="columns['end_date']">{{ tramite.end_date | date }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="d-flex justify-content-end mt-3">
+      <button class="btn btn-primary" (click)="downloadCSV()">Descargar CSV</button>
+    </div>
+  </div>
+</div>

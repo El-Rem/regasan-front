@@ -1,0 +1,55 @@
+<div class="container-fluid pt-4 px-4">
+  <h4>Mis Trámites</h4>
+  <div class="bg-form rounded h-100 p-4">
+    <div class="row">
+      <div class="col-md-6">
+        <label for="rfc">RFC</label>
+        <input type="text" [(ngModel)]="rfc" class="form-control" id="rfc" maxlength="13" (input)="validateRfc()" />
+        <div *ngIf="!isRfcValid && rfcTouched" class="text-danger">
+          El RFC no es válido. Debe tener 12 o 13 caracteres.
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary mt-3" [disabled]="!isRfcValid" (click)="loadTramites()">
+      <i class="bi bi-search"></i> Ver mis trámites
+    </button>
+  </div>
+
+  <div class="table-responsive mt-4" *ngIf="tramites.length > 0">
+    <table class="table table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>Id Trámite</th>
+          <th>Denominación Distintiva</th>
+          <th>Nombre Genérico</th>
+          <th>Fabricante</th>
+          <th>Servicio Requerido</th>
+          <th>Proceso del Trámite</th>
+          <th>Tipo de tramite</th>
+          <th>Clase</th>
+          <th>Fecha de Ingreso COFEPRIS</th>
+          <th>Número de Entrada COFEPRIS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tramite of tramites">
+          <td>{{ tramite.id }}</td>
+          <td>{{ tramite.distinctive_denomination }}</td>
+          <td>{{ tramite.generic_name }}</td>
+          <td>{{ tramite.product_manufacturer }}</td>
+          <td>{{ tramite.service_name }}</td>
+          <td>{{ tramite.status }}</td>
+          <td>{{ tramite.type_description }}%</td>
+          <td>{{ tramite.class_name }}%</td>
+          <td>{{ tramite.cofepris_entry_date }}</td>
+          <td>{{ tramite.cofepris_entry_number }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="tramites.length === 0 && searchAttempted" class="alert alert-info mt-4">
+    No se encontraron trámites para el RFC proporcionado.
+  </div>
+</div>

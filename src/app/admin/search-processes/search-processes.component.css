@@ -1,0 +1,14 @@
+.container-fluid{
+  margin-top: 50px;
+}
+
+.scroll-column {
+  width: 750px;
+}
+
+.scroll-content {
+  max-height: 100px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  padding: 5px;
+}
