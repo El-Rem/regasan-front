@@ -24,6 +24,10 @@ export class EmployeService {
     return this.http.delete(`${this.apiUrl}/${phone_number}`);
   }
 
+  getEmployeById(phone_number: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${phone_number}`);
+  }
+
   getAllEmployes(): Observable<any> {
     return this.http.get(`${this.apiUrl}`);
   }
