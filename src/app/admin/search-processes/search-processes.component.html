@@ -62,6 +62,9 @@
           <th scope="col" *ngIf="columns['cofepris_entry_date']">Fecha Entrada COFEPRIS</th>
           <th scope="col" *ngIf="columns['cofepris_status']">Estatus COFEPRIS</th>
           <th scope="col" *ngIf="columns['cofepris_entry_number']">Número de Entrada COFEPRIS</th>
+          <th scope="col" *ngIf="columns['cofepris_status_health_registration_number']">Registro Sanitario COFEPRIS</th>
+          <th scope="col" *ngIf="columns['cofepris_status_registrer_number']">Número de respuesta COFEPRIS</th>
+          <th scope="col" *ngIf="columns['cofepris_status_prevention_response']">Fecha Respuesta Prevención COFEPRIS</th>
           <th scope="col" *ngIf="columns['assigned_consultant']">Consultor Asignado</th>
           <th scope="col" *ngIf="columns['additional_information']" class="scroll-column">Información Adicional</th>
         </tr>
@@ -92,6 +95,9 @@
           <td *ngIf="columns['cofepris_entry_number']">
             <a [href]="tramite.cofepris_link" target="_blank">{{ tramite.cofepris_entry_number }}</a>
           </td>
+          <td scope="col" *ngIf="columns['cofepris_status_health_registration_number']">{{ tramite.cofepris_status_health_registration_number }}</td>
+          <td scope="col" *ngIf="columns['cofepris_status_registrer_number']">{{ tramite.cofepris_status_registrer_number }}</td>
+          <td scope="col" *ngIf="columns['cofepris_status_prevention_response']">{{ tramite.cofepris_status_prevention_response }}</td>
           <td *ngIf="columns['assigned_consultant']">{{ tramite.assigned_consultant }}</td>
           <td *ngIf="columns['additional_information']">
             <div class="scroll-content">{{ tramite.additional_information }}</div>
