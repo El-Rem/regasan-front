@@ -49,6 +49,22 @@
               Este campo es obligatorio.
             </div>
           </div>
+          <div class="mb-3">
+            <label for="nombreSegundoResponsableClienteCrear" class="form-label">Nombre del Responsable</label>
+            <input type="text" formControlName="contact_first_name_2" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="apellidoSegundoResponsableClienteCrear" class="form-label">Apellido del Responsable</label>
+            <input type="text" formControlName="contact_last_name_2" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="emailSegundoClienteCrear" class="form-label">Email</label>
+            <input type="email" formControlName="email_2" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="telefonoCSegundolienteCrear" class="form-label">Teléfono</label>
+            <input type="tel" formControlName="phone_number_2" class="form-control">
+          </div>
           <button type="submit" class="btn btn-primary">Registrar Cliente</button>
         </form>
       </div>
@@ -82,6 +98,22 @@
           <div class="mb-3">
             <label for="apellidoResponsableCliente" class="form-label">Apellido del Responsable</label>
             <input type="text" formControlName="contact_last_name" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label for="nombreSegundoResponsableCliente" class="form-label">Nombre del Responsable</label>
+            <input type="text" formControlName="contact_first_name_2" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="apellidoSegundoResponsableCliente" class="form-label">Apellido del Responsable</label>
+            <input type="text" formControlName="contact_last_name_2" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="emailSegundoCliente" class="form-label">Email</label>
+            <input type="email" formControlName="email_2" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="telefonoCSegundoliente" class="form-label">Teléfono</label>
+            <input type="tel" formControlName="phone_number_2" class="form-control">
           </div>
           <button type="submit" class="btn btn-primary" id="actualizarDatos" disabled>Actualizar Datos</button>
         </form>
@@ -128,6 +160,9 @@
                 <th scope="col">Email</th>
                 <th scope="col">Teléfono</th>
                 <th scope="col">Responsable</th>
+                <th scope="col">Segundo Responsable</th>
+                <th scope="col">Email Segundo Responsable</th>
+                <th scope="col">Teléfono Segundo Responsable</th>
               </tr>
             </thead>
             <tbody>
@@ -137,6 +172,9 @@
                 <td>{{ client.email }}</td>
                 <td>{{ client.phone_number }}</td>
                 <td>{{ client.contact_first_name }} {{ client.contact_last_name }}</td>
+                <td>{{ client.contact_first_name_2 }} {{ client.contact_last_name_2 }}</td>
+                <td>{{ client.email_2 }}</td>
+                <td>{{ client.phone_number_2 }}</td>
               </tr>
             </tbody>
           </table>

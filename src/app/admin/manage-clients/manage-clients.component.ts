@@ -22,7 +22,11 @@ export class ManageClientsComponent {
       email: ['', [Validators.required, Validators.email]],
       phone_number: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       contact_first_name: ['', Validators.required],
-      contact_last_name: ['', Validators.required]
+      contact_last_name: ['', Validators.required],
+      email_2: ['', [Validators.email]],
+      phone_number_2: ['', [Validators.pattern('^[0-9]{10}$')]],
+      contact_first_name_2: [''],
+      contact_last_name_2: ['']
     });
 
     this.updateForm = this.fb.group({
@@ -31,7 +35,11 @@ export class ManageClientsComponent {
       email: [{ value: '', disabled: false }, [Validators.required, Validators.email]],
       phone_number: [{ value: '', disabled: false }, [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       contact_first_name: [{ value: '', disabled: false }, Validators.required],
-      contact_last_name: [{ value: '', disabled: false }, Validators.required]
+      contact_last_name: [{ value: '', disabled: false }, Validators.required],
+      email_2: [{ value: '', disabled: false }, , [Validators.email]],
+      phone_number_2: [{ value: '', disabled: false }, , [Validators.pattern('^[0-9]{10}$')]],
+      contact_first_name_2: [{ value: '', disabled: false }],
+      contact_last_name_2: [{ value: '', disabled: false }]
     });
 
     this.deleteForm = this.fb.group({
