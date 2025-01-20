@@ -42,11 +42,11 @@ export class BillingDashboardComponent implements OnInit {
   ) {
     // Inicializar el formulario reactivo
     this.facturacionForm = this.fb.group({
-      tramite_id: ['', Validators.required],
-      billing: ['', Validators.required],
-      payment_status: ['', Validators.required],
-      payment_date: ['', Validators.required],
-      collection_notes: ['']
+      tramite_id: [{ value: '', disabled: false }, Validators.required],
+      billing: [{ value: '', disabled: false }],
+      payment_status: [{ value: '', disabled: false }, Validators.required],
+      payment_date: [{ value: '', disabled: false }, Validators.required],
+      collection_notes: [{ value: '', disabled: false }]
     });
   }
 
@@ -148,4 +148,48 @@ export class BillingDashboardComponent implements OnInit {
       this.filteredTramites = [...this.tramites]; // Mostrar todos si no hay filtro seleccionado
     }
   }
+
+  buscarTramite() {
+        const id = (document.getElementById('tramiteIdBuscar') as HTMLInputElement).value;
+
+        if (id) {
+          this.processesService.getProcesses(id).subscribe({
+            next: (response) => {
+              this.facturacionForm.patchValue({
+                tramite_id: response.tramite_id,
+                billing: response.billing,
+                payment_status: response.payment_status,
+                payment_date: response.payment_date,
+                collection_notes: response.collection_notes,
+              });
+
+              Swal.fire({
+                icon: 'success',
+                title: 'Tramite encontrado',
+                text: 'El tramite fue encontrado y los datos se han cargado.',
+                confirmButtonText: 'Aceptar',
+                allowOutsideClick: false
+              });
+              (document.getElementById('actualizarDatos') as HTMLButtonElement).disabled = false;
+            },
+            error: (error) => {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error al buscar tramite',
+                text: 'No se encontró un tramite con el RFC proporcionado.',
+                confirmButtonText: 'Aceptar',
+                allowOutsideClick: false
+              });
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: 'warning',
+            title: 'ID del Trámite  vacío',
+            text: 'Por favor, ingresa un id de tramite para buscar.',
+            confirmButtonText: 'Aceptar',
+            allowOutsideClick: false
+          });
+        }
+      }
 }
