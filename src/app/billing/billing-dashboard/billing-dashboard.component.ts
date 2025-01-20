@@ -78,6 +78,7 @@ export class BillingDashboardComponent implements OnInit {
             confirmButtonText: 'Aceptar'
           });
           this.facturacionForm.reset();
+          this.loadTramites();
         },
         error: () => {
           Swal.fire({
