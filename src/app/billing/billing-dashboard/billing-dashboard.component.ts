@@ -77,6 +77,10 @@ export class BillingDashboardComponent implements OnInit {
             text: 'Los datos de facturación han sido actualizados exitosamente.',
             confirmButtonText: 'Aceptar'
           });
+          const billingValue = this.facturacionForm.get('billing')?.value;
+          if (billingValue && billingValue.trim() !== '') {
+            this.confirmFactura(tramiteId);
+          }
           this.facturacionForm.reset();
           this.loadTramites();
         },
@@ -99,16 +103,21 @@ export class BillingDashboardComponent implements OnInit {
     }
   }
 
+  // Confirmar la factura, haciendo una solicitud PUT
+  confirmFactura(tramiteId: string): void {
+      this.processesService.confirmVenta(tramiteId).subscribe();
+  }
+
   // Cargar trámites desde el servicio
   loadTramites(): void {
     this.processesService.getAllProcesses().subscribe({
       next: (response) => {
         // Filtrar los trámites con sales_flag = true y payment_status distinto de 'pagado'
         this.tramites = response
-          .filter((tramite: any) => tramite.sales_flag === true && tramite.payment_status !== 'paid')
+          .filter((tramite: any) => tramite.payment_status !== 'paid')
           .map((tramite: any) => {
             // Evaluar el color de la fila según la fecha de pago
-          tramite.rowColor = this.getRowColor(tramite.payment_date);
+          tramite.rowColor = this.getRowColor(tramite.payment_date, tramite.sales_flag);
           return tramite;
         });
         this.filteredTramites = [...this.tramites]; // Inicialmente, mostrar todos los trámites
@@ -125,12 +134,15 @@ export class BillingDashboardComponent implements OnInit {
   }
 
   // Obtener el color de la fila según la fecha de pago
-  getRowColor(paymentDate: string): string {
+  getRowColor(paymentDate: string, salesFlag: boolean): string {
     const currentDate = new Date();
     const dueDate = new Date(paymentDate);
     const twoMonthsBeforeDueDate = new Date(dueDate);
     twoMonthsBeforeDueDate.setMonth(dueDate.getMonth() - 2);
 
+    if (!salesFlag) {
+      return 'table-warning'; // Amarillo: salesFlag es false
+    }
     if (currentDate > dueDate) {
       return 'table-danger'; // Rojo: vencido
     } else if (currentDate >= twoMonthsBeforeDueDate && currentDate <= dueDate) {
@@ -151,46 +163,47 @@ export class BillingDashboardComponent implements OnInit {
   }
 
   buscarTramite() {
-        const id = (document.getElementById('tramiteIdBuscar') as HTMLInputElement).value;
+    const id = (document.getElementById('tramiteIdBuscar') as HTMLInputElement).value;
 
-        if (id) {
-          this.processesService.getProcesses(id).subscribe({
-            next: (response) => {
-              this.facturacionForm.patchValue({
-                tramite_id: response.tramite_id,
-                billing: response.billing,
-                payment_status: response.payment_status,
-                payment_date: response.payment_date,
-                collection_notes: response.collection_notes,
-              });
-
-              Swal.fire({
-                icon: 'success',
-                title: 'Tramite encontrado',
-                text: 'El tramite fue encontrado y los datos se han cargado.',
-                confirmButtonText: 'Aceptar',
-                allowOutsideClick: false
-              });
-              (document.getElementById('actualizarDatos') as HTMLButtonElement).disabled = false;
-            },
-            error: (error) => {
-              Swal.fire({
-                icon: 'error',
-                title: 'Error al buscar tramite',
-                text: 'No se encontró un tramite con el RFC proporcionado.',
-                confirmButtonText: 'Aceptar',
-                allowOutsideClick: false
-              });
-            }
+    if (id) {
+      this.processesService.getProcesses(id).subscribe({
+        next: (response) => {
+          const { tramite_id, billing, payment_status, payment_date, collection_notes } = response;
+          // Actualizar solo los campos necesarios sin tocar 'tramite_id'
+          this.facturacionForm.patchValue({
+            billing: billing,
+            payment_status: payment_status,
+            payment_date: payment_date,
+            collection_notes: collection_notes,
           });
-        } else {
+
           Swal.fire({
-            icon: 'warning',
-            title: 'ID del Trámite  vacío',
-            text: 'Por favor, ingresa un id de tramite para buscar.',
+            icon: 'success',
+            title: 'Trámite encontrado',
+            text: 'El trámite fue encontrado y los datos se han cargado.',
+            confirmButtonText: 'Aceptar',
+            allowOutsideClick: false
+          });
+          (document.getElementById('actualizarDatos') as HTMLButtonElement).disabled = false;
+        },
+        error: () => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error al buscar trámite',
+            text: 'No se encontró un trámite con el RFC proporcionado.',
             confirmButtonText: 'Aceptar',
             allowOutsideClick: false
           });
         }
-      }
+      });
+    } else {
+      Swal.fire({
+        icon: 'warning',
+        title: 'ID del Trámite vacío',
+        text: 'Por favor, ingresa un id de trámite para buscar.',
+        confirmButtonText: 'Aceptar',
+        allowOutsideClick: false
+      });
+    }
+  }
 }
