@@ -39,13 +39,8 @@ export class ManageProcessesComponent implements OnInit {
       class_name: ['', Validators.required],
       technical_data: ['', Validators.required],
       start_date: ['', Validators.required],
-      end_date: ['', Validators.required],
       status: ['', Validators.required],
       completion_percentage: ['', [Validators.required, Validators.min(0), Validators.max(100)]],
-      cofepris_entry_date: ['', Validators.required],
-      cofepris_status: ['', Validators.required],
-      cofepris_entry_number: ['', Validators.required],
-      cofepris_link: ['', Validators.required],
       assigned_consultant: ['', Validators.required],
       additional_information: ['']
     });
