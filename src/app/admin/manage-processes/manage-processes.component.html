@@ -223,8 +223,8 @@
             <select formControlName="cofepris_status" class="form-select" id="estatusCofepris">
               <option value="En evaluacion">En evaluacion</option>
               <option value="Disponible">Disponible</option>
-              <option value="Preevención">Preevención</option>
-              <option value="Respuesta a preevencion">Respuesta a preevencion</option>
+              <option value="Prevención">Prevención</option>
+              <option value="Respuesta a prevencion">Respuesta a prevencion</option>
               <option value="Entregado">Entregado</option>
               <option value="Aprobado">Aprobado</option>
               <option value="Deshecho">Deshecho</option>
@@ -236,12 +236,12 @@
             <input formControlName="cofepris_status_health_registration_number" type="text" class="form-control" id="registroSanitario">
           </div>
 
-          <div *ngIf="updateProcessForm.get('cofepris_status')?.value === 'Preevención'" class="mb-3">
+          <div *ngIf="updateProcessForm.get('cofepris_status')?.value === 'Prevención'" class="mb-3">
             <label for="noEntrada" class="form-label">No. Entrada</label>
             <input formControlName="cofepris_status_registrer_number" type="text" class="form-control" id="noEntrada">
           </div>
 
-          <div *ngIf="updateProcessForm.get('cofepris_status')?.value === 'Preevención'" class="mb-3">
+          <div *ngIf="updateProcessForm.get('cofepris_status')?.value === 'Prevención'" class="mb-3">
             <label for="fechaRespuestaPrevencion" class="form-label">Fecha Respuesta Prevención</label>
             <input formControlName="cofepris_status_prevention_response" type="date" class="form-control" id="fechaRespuestaPrevencion">
           </div>
