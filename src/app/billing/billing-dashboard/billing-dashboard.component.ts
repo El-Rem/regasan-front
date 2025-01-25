@@ -114,10 +114,9 @@ export class BillingDashboardComponent implements OnInit {
       next: (response) => {
         // Filtrar los trámites con sales_flag = true y payment_status distinto de 'pagado'
         this.tramites = response
-          .filter((tramite: any) => tramite.payment_status !== 'paid')
           .map((tramite: any) => {
             // Evaluar el color de la fila según la fecha de pago
-          tramite.rowColor = this.getRowColor(tramite.payment_date, tramite.sales_flag);
+          tramite.rowColor = this.getRowColor(tramite.payment_date, tramite.sales_flag, tramite.payment_status);
           return tramite;
         });
         this.filteredTramites = [...this.tramites]; // Inicialmente, mostrar todos los trámites
@@ -134,7 +133,7 @@ export class BillingDashboardComponent implements OnInit {
   }
 
   // Obtener el color de la fila según la fecha de pago
-  getRowColor(paymentDate: string, salesFlag: boolean): string {
+  getRowColor(paymentDate: string, salesFlag: boolean, satus: string): string {
     const currentDate = new Date();
     const dueDate = new Date(paymentDate);
     const twoMonthsBeforeDueDate = new Date(dueDate);
@@ -142,6 +141,9 @@ export class BillingDashboardComponent implements OnInit {
 
     if (!salesFlag) {
       return 'table-warning'; // Amarillo: salesFlag es false
+    }
+    if (satus === "Pagado") {
+      return 'table-primary'; // Azul: si ya se pago
     }
     if (currentDate > dueDate) {
       return 'table-danger'; // Rojo: vencido
