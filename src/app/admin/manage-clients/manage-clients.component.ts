@@ -30,7 +30,7 @@ export class ManageClientsComponent {
     });
 
     this.updateForm = this.fb.group({
-      rfc: [{ value: '', disabled: true }],
+      rfc: ['', [Validators.required, Validators.pattern('^[A-Z0-9]{12,13}$')]],
       business_name: [{ value: '', disabled: false }, Validators.required],
       email: [{ value: '', disabled: false }, [Validators.required, Validators.email]],
       phone_number: [{ value: '', disabled: false }, [Validators.required, Validators.pattern('^[0-9]{10}$')]],
