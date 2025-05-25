@@ -78,7 +78,7 @@
             <input type="text" class="form-control" id="rfcClienteBuscar" required placeholder="Ingresa RFC para buscar">
             <button type="button" class="btn btn-warning mt-2" (click)="buscarCliente()">Buscar Cliente</button>
           </div>
-          <input type="hidden" formControlName="rfc">
+          <input type="text" formControlName="rfc" style="display: none;">
           <div class="mb-3">
             <label for="razonSocialCliente" class="form-label">Razón Social</label>
             <input type="text" formControlName="business_name" class="form-control" required>
