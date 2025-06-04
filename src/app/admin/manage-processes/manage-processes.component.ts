@@ -58,16 +58,16 @@ export class ManageProcessesComponent implements OnInit {
       class_name: ['', Validators.required],
       technical_data: ['', Validators.required],
       start_date: ['', Validators.required],
-      end_date: ['', Validators.required],
+      end_date: [''],
       status: ['', Validators.required],
       completion_percentage: ['', [Validators.required, Validators.min(0), Validators.max(100)]],
-      cofepris_entry_date: ['', Validators.required],
-      cofepris_status: ['', Validators.required],
+      cofepris_entry_date: [''],
+      cofepris_status: [''],
       cofepris_status_health_registration_number: [''],
       cofepris_status_registrer_number: [''],
       cofepris_status_prevention_response: [''],
-      cofepris_entry_number: ['', Validators.required],
-      cofepris_link: ['', Validators.required],
+      cofepris_entry_number: [''],
+      cofepris_link: [''],
       assigned_consultant: ['', Validators.required],
       additional_information: ['']
     });
@@ -270,10 +270,26 @@ export class ManageProcessesComponent implements OnInit {
         }
       });
     } else {
+      const invalidFields = [];
+      const controls = this.updateProcessForm.controls;
+
+      if (controls['distinctive_denomination'].invalid) invalidFields.push('Denominación Distintiva');
+      if (controls['generic_name'].invalid) invalidFields.push('Denominación Genérica');
+      if (controls['product_manufacturer'].invalid) invalidFields.push('Fabricante del Producto');
+      if (controls['service_name'].invalid) invalidFields.push('Servicio');
+      if (controls['input_value'].invalid) invalidFields.push('Insumo');
+      if (controls['type_description'].invalid) invalidFields.push('Tipo');
+      if (controls['class_name'].invalid) invalidFields.push('Clase');
+      if (controls['technical_data'].invalid) invalidFields.push('Datos Técnicos');
+      if (controls['start_date'].invalid) invalidFields.push('Fecha de Inicio');
+      if (controls['status'].invalid) invalidFields.push('Estatus');
+      if (controls['completion_percentage'].invalid) invalidFields.push('Porcentaje de Avance');
+      if (controls['assigned_consultant'].invalid) invalidFields.push('Consultor Asignado');
       Swal.fire({
         icon: 'warning',
         title: 'Formulario incompleto',
         text: 'Por favor, completa todos los campos antes de actualizar el trámite.',
+        html: `Los siguientes campos están vacíos o incorrectos:<br><ul>${invalidFields.map(f => `<li>${f}</li>`).join('')}</ul>`,
         confirmButtonText: 'Aceptar'
       });
     }
