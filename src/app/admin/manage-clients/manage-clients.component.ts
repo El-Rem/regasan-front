@@ -29,7 +29,6 @@ export class ManageClientsComponent {
       contact_last_name_2: ['']
     });
 
-
     this.updateForm = this.fb.group({
       rfc: ['', [Validators.required, Validators.pattern('^[A-Z0-9]{12,13}$')]],
       business_name: [{ value: '', disabled: false }, Validators.required],
