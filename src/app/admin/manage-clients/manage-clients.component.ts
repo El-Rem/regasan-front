@@ -36,8 +36,8 @@ export class ManageClientsComponent {
       phone_number: [{ value: '', disabled: false }, [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       contact_first_name: [{ value: '', disabled: false }, Validators.required],
       contact_last_name: [{ value: '', disabled: false }, Validators.required],
-      email_2: [{ value: '', disabled: false }, , [Validators.email]],
-      phone_number_2: [{ value: '', disabled: false }, , [Validators.pattern('^[0-9]{10}$')]],
+      email_2: [{ value: '', disabled: false }, [Validators.email]],
+      phone_number_2: [{ value: '', disabled: false }, [Validators.pattern('^[0-9]{10}$')]],
       contact_first_name_2: [{ value: '', disabled: false }],
       contact_last_name_2: [{ value: '', disabled: false }]
     });
@@ -108,7 +108,11 @@ export class ManageClientsComponent {
             email: response.email,
             phone_number: response.phone_number,
             contact_first_name: response.contact_first_name,
-            contact_last_name: response.contact_last_name
+            contact_last_name: response.contact_last_name,
+            email_2: response.email_2,
+            phone_number_2: response.phone_number_2,
+            contact_first_name_2: response.contact_first_name_2,
+            contact_last_name_2: response.contact_last_name_2
           });
 
           Swal.fire({
