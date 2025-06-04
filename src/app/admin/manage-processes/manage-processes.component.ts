@@ -299,12 +299,14 @@ onTramiteChange(event: any) {
           start_date: response.start_date,
           end_date: response.end_date,
           status: response.status,
-          process_description: response.process_description,
           completion_percentage: response.completion_percentage,
           cofepris_entry_date: response.cofepris_entry_date,
           cofepris_status: response.cofepris_status,
           cofepris_entry_number: response.cofepris_entry_number,
           cofepris_link: response.cofepris_link,
+          cofepris_status_health_registration_number: response.cofepris_status_health_registration_number,
+          cofepris_status_registrer_number: response.cofepris_status_registrer_number,
+          cofepris_status_prevention_response: response.cofepris_status_prevention_response,
           assigned_consultant: response.assigned_consultant,
           additional_information: response.additional_information
         });
