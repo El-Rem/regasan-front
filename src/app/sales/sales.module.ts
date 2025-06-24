@@ -6,13 +6,15 @@ import { SalesDashboardComponent } from './sales-dashboard/sales-dashboard.compo
 import { ViewEditProcessesComponent } from './view-edit-processes/view-edit-processes.component';
 import { ViewEditTechnicalDataComponent } from './view-edit-technical-data/view-edit-technical-data.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { ViewAllProcessesComponent } from './view-all-processes/view-all-processes.component';
 
 @NgModule({
   declarations: [
     SalesDashboardComponent,
     ViewEditProcessesComponent,
     ViewEditTechnicalDataComponent,
-    NavbarComponent
+    NavbarComponent,
+    ViewAllProcessesComponent
   ],
   imports: [
     CommonModule,
