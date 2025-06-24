@@ -83,10 +83,6 @@
             <input formControlName="start_date" type="date" class="form-control" id="fechaInicio" >
           </div>
           <div class="mb-3">
-            <label for="fechaFin" class="form-label">Fecha de Fin</label>
-            <input formControlName="end_date" type="date" class="form-control" id="fechaFin">
-          </div>
-          <div class="mb-3">
             <label for="estatus" class="form-label">Estatus</label>
             <select formControlName="status" class="form-select" id="estatus">
               <option value="Pendiente">Pendiente</option>
@@ -98,31 +94,6 @@
           <div class="mb-3">
             <label for="porcentajeAvance" class="form-label">Porcentaje de Avance</label>
             <input formControlName="completion_percentage" type="number" min="0" max="100" class="form-control" id="porcentajeAvance" >
-          </div>
-          <div class="mb-3">
-            <label for="fechaCofepris" class="form-label">Fecha de Ingreso a COFEPRIS</label>
-            <input formControlName="cofepris_entry_date" type="date" class="form-control" id="fechaCofepris" >
-          </div>
-          <div class="mb-3">
-            <label for="estatusCofepris" class="form-label">Estatus de COFEPRIS</label>
-            <select formControlName="cofepris_status" class="form-select" id="estatusCofepris">
-              <option value="En evaluacion">En evaluacion</option>
-              <option value="Disponible">Disponible</option>
-              <option value="Preevención">Preevención</option>
-              <option value="Respuesta a preevencion">Respuesta a preevencion</option>
-              <option value="Entregado">Entregado</option>
-              <option value="Aprobado">Aprobado</option>
-              <option value="Deshecho">Deshecho</option>
-              <option value="NA">NA</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="numeroCofepris" class="form-label">Número de Entrada a COFEPRIS</label>
-            <input formControlName="cofepris_entry_number" type="text" class="form-control" id="numeroCofepris" >
-          </div>
-          <div class="mb-3">
-            <label for="linkCofepris" class="form-label">Link de COFEPRIS</label>
-            <input formControlName="cofepris_link" type="url" class="form-control" id="linkCofepris" >
           </div>
           <div class="mb-3">
             <label for="assigned_consultant">Consultor Asignado</label>
@@ -219,7 +190,7 @@
             </select>
           </div>
           <div class="mb-3">
-            <label for="datosTecnicos" class="form-label">Datos Técnico</label>
+            <label for="datosTecnicos" class="form-label">Datos Técnicos</label>
             <textarea formControlName="technical_data" class="form-control" id="datosTecnicos" rows="3"></textarea>
           </div>
           <div class="mb-3">
@@ -252,8 +223,8 @@
             <select formControlName="cofepris_status" class="form-select" id="estatusCofepris">
               <option value="En evaluacion">En evaluacion</option>
               <option value="Disponible">Disponible</option>
-              <option value="Preevención">Preevención</option>
-              <option value="Respuesta a preevencion">Respuesta a preevencion</option>
+              <option value="Prevención">Prevención</option>
+              <option value="Respuesta a prevencion">Respuesta a prevencion</option>
               <option value="Entregado">Entregado</option>
               <option value="Aprobado">Aprobado</option>
               <option value="Deshecho">Deshecho</option>
@@ -265,12 +236,12 @@
             <input formControlName="cofepris_status_health_registration_number" type="text" class="form-control" id="registroSanitario">
           </div>
 
-          <div *ngIf="updateProcessForm.get('cofepris_status')?.value === 'Preevención'" class="mb-3">
+          <div *ngIf="updateProcessForm.get('cofepris_status')?.value === 'Prevención'" class="mb-3">
             <label for="noEntrada" class="form-label">No. Entrada</label>
             <input formControlName="cofepris_status_registrer_number" type="text" class="form-control" id="noEntrada">
           </div>
 
-          <div *ngIf="updateProcessForm.get('cofepris_status')?.value === 'Preevención'" class="mb-3">
+          <div *ngIf="updateProcessForm.get('cofepris_status')?.value === 'Prevención'" class="mb-3">
             <label for="fechaRespuestaPrevencion" class="form-label">Fecha Respuesta Prevención</label>
             <input formControlName="cofepris_status_prevention_response" type="date" class="form-control" id="fechaRespuestaPrevencion">
           </div>

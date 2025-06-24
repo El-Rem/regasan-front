@@ -64,9 +64,9 @@
         <form [formGroup]="updateForm" (ngSubmit)="actualizarEmpleado()">
           <div class="mb-3">
             <label for="phoneEmpleado" class="form-label">Número telefónico</label>
-            <input type="tel" formControlName="phone_number" class="form-control" required>
+            <input type="tel" class="form-control" id="numeroEmpleadoBuscar" required placeholder="Ingresa el número telefónico para buscar">
+            <button type="button" class="btn btn-warning mt-2" (click)="buscarEmpleado()">Buscar Empleado</button>
           </div>
-          <input type="hidden" formControlName="phone_number">
           <div class="mb-3">
             <label for="emailEmpleado" class="form-label">Email</label>
             <input type="email" formControlName="email" class="form-control" required>

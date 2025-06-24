@@ -88,6 +88,50 @@ export class ManageEmployesComponent {
     }
   }
 
+  buscarEmpleado() {
+      const id = (document.getElementById('numeroEmpleadoBuscar') as HTMLInputElement).value;
+
+      if (id) {
+        this.employeService.getEmployeById(id).subscribe({
+          next: (response) => {
+            this.updateForm.patchValue({
+              phone_number: response.phone_number,
+              email: response.email,
+              first_name: response.first_name,
+              last_name: response.last_name,
+              role: response.password,
+            });
+
+            Swal.fire({
+              icon: 'success',
+              title: 'Empleado encontrado',
+              text: 'El empleado fue encontrado y los datos se han cargado.',
+              confirmButtonText: 'Aceptar',
+              allowOutsideClick: false
+            });
+            (document.getElementById('actualizarDatos') as HTMLButtonElement).disabled = false;
+          },
+          error: (error) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error al buscar empleado',
+              text: 'No se encontró un empleado con el RFC proporcionado.',
+              confirmButtonText: 'Aceptar',
+              allowOutsideClick: false
+            });
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: 'warning',
+          title: 'RFC vacío',
+          text: 'Por favor, ingresa un RFC para buscar.',
+          confirmButtonText: 'Aceptar',
+          allowOutsideClick: false
+        });
+      }
+    }
+
   actualizarEmpleado() {
     if (this.updateForm.valid) {
       const phone_number = this.updateForm.get('phone_number')?.value;

@@ -68,12 +68,13 @@
     <form [formGroup]="facturacionForm" (ngSubmit)="updateFacturacion()">
       <div class="mb-3">
         <label for="tramiteId" class="form-label">ID del Trámite</label>
-        <input formControlName="tramite_id" type="text" class="form-control" id="tramiteId" required />
+        <input formControlName="tramite_id" type="text" class="form-control" id="tramiteIdBuscar" required placeholder="Ingresa el número de tramite para buscar">
+        <button type="button" class="btn btn-warning mt-2" (click)="buscarTramite()">Buscar Tramite</button>
       </div>
 
       <div class="mb-3">
         <label for="billing" class="form-label">Número de Facturación</label>
-        <input formControlName="billing" type="text" class="form-control" id="billing" required />
+        <input formControlName="billing" type="text" class="form-control" id="billing" />
       </div>
 
       <div class="mb-3">

@@ -67,7 +67,7 @@ export class SearchProcessesComponent implements OnInit {
     cofepris_status: 'Estatus COFEPRIS',
     cofepris_entry_number: 'Número de Entrada COFEPRIS',
     cofepris_status_health_registration_number: 'Registro Sanitario COFEPRIS',
-    cofepris_status_registrer_number: 'Numero de respuesta COFEPRIS',
+    cofepris_status_registrer_number: 'Número de respuesta COFEPRIS',
     cofepris_status_prevention_response: 'Fecha Respuesta Prevención COFEPRIS',
     assigned_consultant: 'Consultor Asignado',
     additional_information: 'Información Adicional',
