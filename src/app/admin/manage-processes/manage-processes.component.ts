@@ -228,10 +228,28 @@ export class ManageProcessesComponent implements OnInit {
         }
       });
     } else {
+      const invalidFields = [];
+      const controls = this.processForm.controls;
+
+      if (controls['client_rfc'].invalid) invalidFields.push('Cliente');
+      if (controls['id'].invalid) invalidFields.push('Id REGSAN');
+      if (controls['distinctive_denomination'].invalid) invalidFields.push('Denominación Distintiva');
+      if (controls['generic_name'].invalid) invalidFields.push('Denominación Genérica');
+      if (controls['product_manufacturer'].invalid) invalidFields.push('Fabricante del Producto');
+      if (controls['service_name'].invalid) invalidFields.push('Servicio');
+      if (controls['input_value'].invalid) invalidFields.push('Insumo');
+      if (controls['type_description'].invalid) invalidFields.push('Tipo');
+      if (controls['class_name'].invalid) invalidFields.push('Clase');
+      if (controls['technical_data'].invalid) invalidFields.push('Datos Técnicos');
+      if (controls['start_date'].invalid) invalidFields.push('Fecha de Inicio');
+      if (controls['status'].invalid) invalidFields.push('Estatus');
+      if (controls['completion_percentage'].invalid) invalidFields.push('Porcentaje de Avance');
+      if (controls['assigned_consultant'].invalid) invalidFields.push('Consultor Asignado');
+
       Swal.fire({
         icon: 'warning',
         title: 'Formulario incompleto',
-        text: 'Por favor, completa todos los campos antes de registrar el trámite.',
+        html: `Los siguientes campos están vacíos o incorrectos:<br><ul>${invalidFields.map(f => `<li>${f}</li>`).join('')}</ul>`,
         confirmButtonText: 'Aceptar'
       });
     }
@@ -259,6 +277,7 @@ export class ManageProcessesComponent implements OnInit {
             text: 'Los datos del trámite han sido actualizados exitosamente.',
             confirmButtonText: 'Aceptar'
           });
+          this.updateProcessForm.reset();
         },
         error: (error) => {
           Swal.fire({
