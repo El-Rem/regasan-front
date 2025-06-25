@@ -231,7 +231,7 @@
               <option value="NA">NA</option>
             </select>
           </div>
-          <div *ngIf="updateProcessForm.get('cofepris_status')?.value === 'Aprobado'" class="mb-3">
+          <div *ngIf="['Prevención', 'Aprobado'].includes(updateProcessForm.get('cofepris_status')?.value)" class="mb-3">
             <label for="registroSanitario" class="form-label">Registro Sanitario</label>
             <input formControlName="cofepris_status_health_registration_number" type="text" class="form-control" id="registroSanitario">
           </div>
