@@ -13,8 +13,8 @@ export class SearchProcessesComponent implements OnInit {
   clients: any[] = [];
   tramites: any[] = [];
   allTramites: any[] = [];
-  selectedCliente: string = '';
-  selectedStatus: string = '';
+  selectedCliente: string = 'Todos';
+  selectedStatus: string = 'Todos';
   statuses: string[] = ['Todos', 'Pendiente', 'En Proceso', 'Finalizado', 'Cancelado'];
 
   columns: { [key: string]: boolean } = {
@@ -76,13 +76,21 @@ export class SearchProcessesComponent implements OnInit {
   constructor(private clientService: ClientService, private processesService: ProcessesService, private router: Router) {}
 
   ngOnInit(): void {
+    const filtroCliente = localStorage.getItem('tramites-filtro-cliente');
+    const filtroStatus = localStorage.getItem('tramites-filtro-status');
+
+    if (filtroCliente) this.selectedCliente = filtroCliente;
+    if (filtroStatus) this.selectedStatus = filtroStatus;
+
     this.loadClients();
+    this.loadProcesses();
   }
 
   loadClients(): void {
     this.clientService.getAllClients().subscribe({
       next: (response) => {
-        this.clients = response.map((client: any) => client.business_name);
+        const nombres = response.map((client: any) => client.business_name);
+        this.clients = ['Todos', ...nombres]; // Agrega 'Todos' al inicio
       },
       error: (error) => {
         Swal.fire({
@@ -97,43 +105,45 @@ export class SearchProcessesComponent implements OnInit {
   }
 
   loadProcesses(): void {
-    if (this.selectedCliente) {
-      this.processesService.getProcesses(`search?businessName=${this.selectedCliente}`).subscribe({
+    if (this.selectedCliente === 'Todos') {
+      this.processesService.getAllProcesses().subscribe({
         next: (response) => {
-          this.allTramites = response;  // Guardar todos los trámites sin filtro
-          this.tramites = response;     // Mostrar todos los trámites inicialmente
-          this.filterByStatus();        // Aplicar el filtro de estatus inmediatamente si ya hay uno seleccionado
+          this.allTramites = this.sortByNumberDesc(response);
+          this.filterByStatus();
+
+          setTimeout(() => this.restoreScroll(), 0);
         },
-        error: (error) => {
+        error: () => {
           Swal.fire({
             icon: 'error',
             title: 'Error al cargar trámites',
-            text: 'No se pudieron cargar los trámites. Por favor, inténtalo nuevamente.',
-            confirmButtonText: 'Aceptar',
-            allowOutsideClick: false
+            text: 'No se pudieron cargar los trámites.',
+            confirmButtonText: 'Aceptar'
+          });
+        }
+      });
+    } else if (this.selectedCliente) {
+      this.processesService.getProcesses(`search?businessName=${this.selectedCliente}`).subscribe({
+        next: (response) => {
+          this.allTramites = this.sortByNumberDesc(response);
+          this.filterByStatus();
+
+          setTimeout(() => this.restoreScroll(), 0);
+        },
+        error: () => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error al cargar trámites',
+            text: 'No se pudieron cargar los trámites.',
+            confirmButtonText: 'Aceptar'
           });
         }
       });
     }
   }
 
-  getAllProcesses(): void {
-    this.processesService.getAllProcesses().subscribe({
-      next: (response) => {
-        this.allTramites = response;  // Guardar todos los trámites sin filtro
-        this.tramites = response;     // Mostrar todos los trámites inicialmente
-        this.filterByStatus();        // Aplicar el filtro de estatus si es necesario
-      },
-      error: (error) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error al cargar trámites',
-          text: 'No se pudieron cargar los trámites. Por favor, inténtalo nuevamente.',
-          confirmButtonText: 'Aceptar',
-          allowOutsideClick: false
-        });
-      }
-    });
+  private sortByNumberDesc(data: any[]): any[] {
+    return [...data].sort((a, b) => b.number - a.number);
   }
 
   filterByStatus(): void {
@@ -150,6 +160,29 @@ export class SearchProcessesComponent implements OnInit {
   }
 
   viewDetails(id: string): void {
+    const scrollContainer = document.documentElement || document.body;
+    localStorage.setItem('tramites-scroll', scrollContainer.scrollTop.toString());
+
+    localStorage.setItem('tramites-filtro-cliente', this.selectedCliente);
+    localStorage.setItem('tramites-filtro-status', this.selectedStatus);
+
     this.router.navigate(['/admin/tramite-detalle', id]);
+  }
+
+
+  resetFilters(): void {
+    this.selectedCliente = 'Todos';
+    this.selectedStatus = 'Todos';
+    localStorage.removeItem('tramites-filtro-cliente');
+    localStorage.removeItem('tramites-filtro-status');
+    this.loadProcesses();
+  }
+
+  private restoreScroll(): void {
+    const scrollValue = localStorage.getItem('tramites-scroll');
+    if (scrollValue) {
+      window.scrollTo({ top: parseInt(scrollValue, 10), behavior: 'auto' });
+      localStorage.removeItem('tramites-scroll'); // Limpia para evitar que se aplique al navegar normal
+    }
   }
 }
