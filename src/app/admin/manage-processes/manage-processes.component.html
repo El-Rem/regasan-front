@@ -71,6 +71,8 @@
               <option value="Clase 1">Clase 1</option>
               <option value="Clase 2">Clase 2</option>
               <option value="Clase 3">Clase 3</option>
+              <option value="Clase 1 (bajo riesgo)">Clase 1 (bajo riesgo)</option>
+              <option value="Remedio Herbolario">Remedio Herbolario </option>
               <option value="NA">NA</option>
             </select>
           </div>
@@ -186,6 +188,8 @@
               <option value="Clase 1">Clase 1</option>
               <option value="Clase 2">Clase 2</option>
               <option value="Clase 3">Clase 3</option>
+              <option value="Clase 1 (bajo riesgo)">Clase 1 (bajo riesgo)</option>
+              <option value="Remedio Herbolario">Remedio Herbolario </option>
               <option value="NA">NA</option>
             </select>
           </div>
@@ -221,27 +225,32 @@
           <div class="mb-3">
             <label for="estatusCofepris" class="form-label">Estatus de COFEPRIS</label>
             <select formControlName="cofepris_status" class="form-select" id="estatusCofepris">
-              <option value="En evaluacion">En evaluacion</option>
-              <option value="Disponible">Disponible</option>
-              <option value="Prevención">Prevención</option>
-              <option value="Respuesta a prevencion">Respuesta a prevencion</option>
-              <option value="Entregado">Entregado</option>
               <option value="Aprobado">Aprobado</option>
-              <option value="Deshecho">Deshecho</option>
+              <option value="Cancelado">Cancelado</option>
+              <option value="Desecho">Desecho</option>
+              <option value="Devuelto al área">Devuelto al área</option>
+              <option value="Disponible">Disponible</option>
+              <option value="En evaluación">En evaluación</option>
+              <option value="Entregado">Entregado</option>
+              <option value="Negativa">Negativa</option>
+              <option value="Prevención">Prevención</option>
+              <option value="Respuesta a prevención">Respuesta a prevención</option>
+              <option value="Recurso revisión">Recurso revisión</option>
+              <option value="Pendiente">Pendiente</option>
               <option value="NA">NA</option>
             </select>
           </div>
-          <div *ngIf="updateProcessForm.get('cofepris_status')?.value === 'Aprobado'" class="mb-3">
+          <div *ngIf="['Prevención', 'Aprobado'].includes(updateProcessForm.get('cofepris_status')?.value)" class="mb-3">
             <label for="registroSanitario" class="form-label">Registro Sanitario</label>
             <input formControlName="cofepris_status_health_registration_number" type="text" class="form-control" id="registroSanitario">
           </div>
 
-          <div *ngIf="updateProcessForm.get('cofepris_status')?.value === 'Prevención'" class="mb-3">
+          <div *ngIf="['Prevención', 'Aprobado'].includes(updateProcessForm.get('cofepris_status')?.value)" class="mb-3">
             <label for="noEntrada" class="form-label">No. Entrada</label>
             <input formControlName="cofepris_status_registrer_number" type="text" class="form-control" id="noEntrada">
           </div>
 
-          <div *ngIf="updateProcessForm.get('cofepris_status')?.value === 'Prevención'" class="mb-3">
+          <div *ngIf="['Prevención', 'Aprobado'].includes(updateProcessForm.get('cofepris_status')?.value)" class="mb-3">
             <label for="fechaRespuestaPrevencion" class="form-label">Fecha Respuesta Prevención</label>
             <input formControlName="cofepris_status_prevention_response" type="date" class="form-control" id="fechaRespuestaPrevencion">
           </div>
