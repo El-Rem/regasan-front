@@ -1,1 +1,308 @@
-<p>regulatory-dashboard works!</p>
+<app-navbar></app-navbar>
+<div class="container-fluid pt-4 px-4">
+  <h4>Gestión de Trámites</h4>
+
+  <!-- Registro de Trámite -->
+  <div class="row g-4">
+    <div class="col-sm-12 col-xl-6">
+      <div class="bg-form rounded h-100 p-4">
+        <h6 class="mb-4">Registro de Trámite</h6>
+        <form [formGroup]="processForm" (ngSubmit)="registerProcess()">
+          <div class="mb-3">
+            <label for="cliente" class="form-label">Cliente</label>
+            <select formControlName="client_rfc" class="form-select" id="cliente">
+              <option *ngFor="let client of clients" [value]="client.rfc">{{ client.business_name }}</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="id" class="form-label">Id REGSAN</label>
+            <input formControlName="id" type="text" class="form-control" id="id" required>
+          </div>
+          <div class="mb-3">
+            <label for="denominacionDistintiva" class="form-label">Denominación Distintiva</label>
+            <input formControlName="distinctive_denomination" type="text" class="form-control" id="denominacionDistintiva" required>
+          </div>
+          <div class="mb-3">
+            <label for="denominacionGenerica" class="form-label">Denominación Genérica</label>
+            <input formControlName="generic_name" type="text" class="form-control" id="denominacionGenerica" required>
+          </div>
+          <div class="mb-3">
+            <label for="fabricante" class="form-label">Fabricante del Producto</label>
+            <input formControlName="product_manufacturer" type="text" class="form-control" id="fabricante" required>
+          </div>
+          <div class="mb-3">
+            <label for="servicio" class="form-label">Servicio</label>
+            <select formControlName="service_name" class="form-select" id="servicio" (change)="onServiceChange($event)">
+              <option value="Armado de Dossier">Armado de Dossier</option>
+              <option value="Consultoria">Consultoria</option>
+              <option value="Otro">Otro</option>
+            </select>
+            <div *ngIf="serviceIsOther">
+              <input formControlName="other_service" type="text" class="form-control mt-2" placeholder="Especificar otro servicio">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="insumo" class="form-label">Insumo</label>
+            <select formControlName="input_value" class="form-select" id="insumo">
+              <option value="Dispositivo Medico">Dispositivo Medico</option>
+              <option value="Medicamento Generico">Medicamento Generico</option>
+              <option value="NA">NA</option>
+              <option value="Permiso de importacion">Permiso de importacion</option>
+              <option value="Tecno-Vigilancia">Tecno-Vigilancia</option>
+              <option value="Molecula Nueva">Molecula Nueva</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="tipo" class="form-label">Tipo</label>
+            <select formControlName="type_description" class="form-select" id="tipo">
+              <option value="Consultoria">Consultoria</option>
+              <option value="MA">MA</option>
+              <option value="MT">MT</option>
+              <option value="NA">NA</option>
+              <option value="PRO">PRO</option>
+              <option value="PSI">PSI</option>
+              <option value="RN">RN</option>
+              <option value="RN-FDA">RN-FDA</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="clase" class="form-label">Clase</label>
+            <select formControlName="class_name" class="form-select" id="clase">
+              <option value="Clase 1">Clase 1</option>
+              <option value="Clase 2">Clase 2</option>
+              <option value="Clase 3">Clase 3</option>
+              <option value="Clase 1 (bajo riesgo)">Clase 1 (bajo riesgo)</option>
+              <option value="Remedio Herbolario">Remedio Herbolario </option>
+              <option value="NA">NA</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="technicalData" class="form-label">Datos Técnico</label>
+            <textarea formControlName="technical_data" class="form-control" id="technicalData" rows="3"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="fechaInicio" class="form-label">Fecha de Inicio</label>
+            <input formControlName="start_date" type="date" class="form-control" id="fechaInicio" >
+          </div>
+          <div class="mb-3">
+            <label for="estatus" class="form-label">Estatus</label>
+            <select formControlName="status" class="form-select" id="estatus">
+              <option value="Pendiente">Pendiente</option>
+              <option value="En Proceso">En Proceso</option>
+              <option value="Finalizado">Finalizado</option>
+              <option value="Cancelado">Cancelado</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="porcentajeAvance" class="form-label">Porcentaje de Avance</label>
+            <input formControlName="completion_percentage" type="number" min="0" max="100" class="form-control" id="porcentajeAvance" >
+          </div>
+          <div class="mb-3">
+            <label for="assigned_consultant">Consultor Asignado</label>
+              <select id="assigned_consultant" formControlName="assigned_consultant" class="form-select">
+                <option *ngFor="let emp of employees" [value]="emp.fullName">
+                  {{ emp.fullName }}
+                </option>
+              </select>
+          </div>
+          <div class="mb-3">
+            <label for="informacionAdicional" class="form-label">Información Adicional</label>
+            <input formControlName="additional_information" type="text" class="form-control" id="informacionAdicional">
+          </div>
+          <button type="submit" class="btn btn-primary">Registrar Trámite</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Actualización de Trámite -->
+    <div class="col-sm-12 col-xl-6">
+      <div class="bg-form rounded h-100 p-4">
+        <h6 class="mb-4">Actualizar Trámite</h6>
+        <form [formGroup]="updateProcessForm" (ngSubmit)="updateProcess()">
+          <div class="mb-3">
+            <label for="cliente" class="form-label">Cliente</label>
+            <div class="d-flex align-items-center">
+              <select formControlName="client_rfc" class="form-select" id="cliente" (change)="onClientChange($event)">
+                <option *ngFor="let client of clients" [value]="client.rfc">{{ client.business_name }}</option>
+              </select>
+              <button type="button" class="btn btn-info" (click)="searchTramites()"><i class="bi bi-search" style="color: white; font-weight: bold;"></i></button>
+            </div>
+          </div>
+          <div class="mb-3" *ngIf="tramites.length > 0">
+            <label for="tramiteId" class="form-label">Trámite</label>
+            <select formControlName="tramite_id" class="form-select" id="tramiteId" (change)="onTramiteChange($event)">
+              <option *ngFor="let tramite of tramites" [value]="tramite.id">{{ tramite.id }}</option>
+            </select>
+          </div>
+          <div class="border-top border-dark my-4"></div>
+          <div class="mb-3">
+            <label for="denominacionDistintiva" class="form-label">Denominación Distintiva</label>
+            <input formControlName="distinctive_denomination" type="text" class="form-control" id="denominacionDistintiva" required>
+          </div>
+          <div class="mb-3">
+            <label for="denominacionGenerica" class="form-label">Denominación Genérica</label>
+            <input formControlName="generic_name" type="text" class="form-control" id="denominacionGenerica" required>
+          </div>
+          <div class="mb-3">
+            <label for="fabricante" class="form-label">Fabricante del Producto</label>
+            <input formControlName="product_manufacturer" type="text" class="form-control" id="fabricante" required>
+          </div>
+          <div class="mb-3">
+            <label for="servicio" class="form-label">Servicio</label>
+            <select formControlName="service_name" class="form-select" id="servicio" (change)="onServiceChange($event)">
+              <option value="Armado de Dossier">Armado de Dossier</option>
+              <option value="Consultoria">Consultoria</option>
+              <option value="Otro">Otro</option>
+            </select>
+            <div *ngIf="serviceIsOther">
+              <input formControlName="other_service" type="text" class="form-control mt-2" placeholder="Especificar otro servicio">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="insumo" class="form-label">Insumo</label>
+            <select formControlName="input_value" class="form-select" id="insumo">
+              <option value="Dispositivo Medico">Dispositivo Medico</option>
+              <option value="Medicamento Generico">Medicamento Generico</option>
+              <option value="NA">NA</option>
+              <option value="Permiso de importacion">Permiso de importacion</option>
+              <option value="Tecno-Vigilancia">Tecno-Vigilancia</option>
+              <option value="Molecula Nueva">Molecula Nueva</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="tipo" class="form-label">Tipo</label>
+            <select formControlName="type_description" class="form-select" id="tipo">
+              <option value="Consultoria">Consultoria</option>
+              <option value="MA">MA</option>
+              <option value="MT">MT</option>
+              <option value="NA">NA</option>
+              <option value="PRO">PRO</option>
+              <option value="PSI">PSI</option>
+              <option value="RN">RN</option>
+              <option value="RN-FDA">RN-FDA</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="clase" class="form-label">Clase</label>
+            <select formControlName="class_name" class="form-select" id="clase">
+              <option value="Clase 1">Clase 1</option>
+              <option value="Clase 2">Clase 2</option>
+              <option value="Clase 3">Clase 3</option>
+              <option value="Clase 1 (bajo riesgo)">Clase 1 (bajo riesgo)</option>
+              <option value="Remedio Herbolario">Remedio Herbolario </option>
+              <option value="NA">NA</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="datosTecnicos" class="form-label">Datos Técnicos</label>
+            <textarea formControlName="technical_data" class="form-control" id="datosTecnicos" rows="3"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="fechaInicio" class="form-label">Fecha de Inicio</label>
+            <input formControlName="start_date" type="date" class="form-control" id="fechaInicio" >
+          </div>
+          <div class="mb-3">
+            <label for="fechaFin" class="form-label">Fecha de Fin</label>
+            <input formControlName="end_date" type="date" class="form-control" id="fechaFin">
+          </div>
+          <div class="mb-3">
+            <label for="estatus" class="form-label">Estatus</label>
+            <select formControlName="status" class="form-select" id="estatus">
+              <option value="Pendiente">Pendiente</option>
+              <option value="En Proceso">En Proceso</option>
+              <option value="Finalizado">Finalizado</option>
+              <option value="Cancelado">Cancelado</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="porcentajeAvance" class="form-label">Porcentaje de Avance</label>
+            <input formControlName="completion_percentage" type="number" min="0" max="100" class="form-control" id="porcentajeAvance">
+          </div>
+          <div class="mb-3">
+            <label for="fechaCofepris" class="form-label">Fecha de Ingreso a COFEPRIS</label>
+            <input formControlName="cofepris_entry_date" type="date" class="form-control" id="fechaCofepris">
+          </div>
+          <div class="mb-3">
+            <label for="estatusCofepris" class="form-label">Estatus de COFEPRIS</label>
+            <select formControlName="cofepris_status" class="form-select" id="estatusCofepris">
+              <option value="Aprobado">Aprobado</option>
+              <option value="Cancelado">Cancelado</option>
+              <option value="Desecho">Desecho</option>
+              <option value="Devuelto al área">Devuelto al área</option>
+              <option value="Disponible">Disponible</option>
+              <option value="En evaluación">En evaluación</option>
+              <option value="Entregado">Entregado</option>
+              <option value="Negativa">Negativa</option>
+              <option value="Prevención">Prevención</option>
+              <option value="Respuesta a prevención">Respuesta a prevención</option>
+              <option value="Recurso revisión">Recurso revisión</option>
+              <option value="Pendiente">Pendiente</option>
+              <option value="NA">NA</option>
+            </select>
+          </div>
+          <div *ngIf="['Prevención', 'Aprobado'].includes(updateProcessForm.get('cofepris_status')?.value)" class="mb-3">
+            <label for="registroSanitario" class="form-label">Registro Sanitario</label>
+            <input formControlName="cofepris_status_health_registration_number" type="text" class="form-control" id="registroSanitario">
+          </div>
+
+          <div *ngIf="['Prevención', 'Aprobado'].includes(updateProcessForm.get('cofepris_status')?.value)" class="mb-3">
+            <label for="noEntrada" class="form-label">No. Entrada</label>
+            <input formControlName="cofepris_status_registrer_number" type="text" class="form-control" id="noEntrada">
+          </div>
+
+          <div *ngIf="['Prevención', 'Aprobado'].includes(updateProcessForm.get('cofepris_status')?.value)" class="mb-3">
+            <label for="fechaRespuestaPrevencion" class="form-label">Fecha Respuesta Prevención</label>
+            <input formControlName="cofepris_status_prevention_response" type="date" class="form-control" id="fechaRespuestaPrevencion">
+          </div>
+          <div class="mb-3">
+            <label for="numeroCofepris" class="form-label">Número de Entrada a COFEPRIS</label>
+            <input formControlName="cofepris_entry_number" type="text" class="form-control" id="numeroCofepris">
+          </div>
+          <div class="mb-3">
+            <label for="linkCofepris" class="form-label">Link de COFEPRIS</label>
+            <input formControlName="cofepris_link" type="url" class="form-control" id="linkCofepris">
+          </div>
+          <div class="mb-3">
+            <label for="update_assigned_consultant">Consultor Asignado</label>
+              <select id="update_assigned_consultant" formControlName="assigned_consultant" class="form-select">
+                <option *ngFor="let emp of employees" [value]="emp.fullName">
+                  {{ emp.fullName }}
+                </option>
+              </select>
+          </div>
+          <div class="mb-3">
+            <label for="informacionAdicional" class="form-label">Información Adicional</label>
+            <input formControlName="additional_information" type="text" class="form-control" id="informacionAdicional">
+          </div>
+          <button type="submit" class="btn btn-primary">Actualizar Trámite</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Eliminación de Trámite
+    <div class="col-sm-12 col-xl-6">
+      <div class="bg-form rounded h-100 p-4">
+        <h6 class="mb-4">Eliminar Trámite</h6>
+        <form [formGroup]="deleteProcessForm" (ngSubmit)="deleteProcess()">
+          <div class="mb-3">
+            <label for="cliente" class="form-label">Cliente</label>
+            <div class="d-flex align-items-center">
+              <select formControlName="client_rfc" class="form-select me-2" id="cliente" (change)="onClientChange($event)">
+                <option *ngFor="let client of clients" [value]="client.rfc">{{ client.business_name }}</option>
+              </select>
+              <button type="button" class="btn btn-info" (click)="searchTramites()"><i class="bi bi-search" style="color: white; font-weight: bold;"></i></button>
+            </div>
+          </div>
+          <div class="mb-3" *ngIf="tramites.length > 0">
+            <label for="tramiteIdEliminar" class="form-label">Trámite</label>
+            <select formControlName="tramite_id" class="form-select" id="tramiteIdEliminar">
+              <option *ngFor="let tramite of tramites" [value]="tramite.id">{{ tramite.id }}</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-danger">Eliminar Trámite</button>
+        </form>
+      </div>
+    </div>
+    -->
+  </div>
+</div>

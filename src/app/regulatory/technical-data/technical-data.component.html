@@ -1,0 +1,35 @@
+<p>technical-data works!</p>
+<app-navbar></app-navbar>
+<div class="container-fluid pt-4 px-4">
+  <h4>Gestión de datos Técnicos</h4>
+
+  <div class="row g-4">
+    <div class="col-sm-12 col-xl-6">
+      <div class="bg-form rounded h-100 p-4">
+        <h6 class="mb-4">Actualizar Datos Técnicos</h6>
+        <form [formGroup]="technicalDataForm" (ngSubmit)="updateTechnicalData()">
+          <div class="mb-3">
+            <label for="cliente" class="form-label">Cliente</label>
+            <select formControlName="client_rfc" class="form-select" id="cliente" (change)="onClientChange($event)">
+              <option *ngFor="let client of clients" [value]="client.rfc">{{ client.business_name }}</option>
+            </select>
+          </div>
+
+          <div class="mb-3" *ngIf="tramites.length > 0">
+            <label for="tramiteId" class="form-label">Trámite</label>
+            <select formControlName="tramite_id" class="form-select" id="tramiteId" (change)="onTramiteChange($event)">
+              <option *ngFor="let tramite of tramites" [value]="tramite.id">{{ tramite.id }}</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="technicalData" class="form-label">Datos Técnicos</label>
+            <textarea formControlName="technical_data" class="form-control" id="technicalData" rows="3" required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Actualizar Datos Técnicos</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
