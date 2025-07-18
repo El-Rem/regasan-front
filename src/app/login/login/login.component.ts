@@ -39,7 +39,7 @@ export class LoginComponent {
         this.router.navigate(['/billing/dashboard']);
         break;
       case 'Regulatorio':
-        this.router.navigate(['/regulatory/dashboard']);
+        this.router.navigate(['/regulatory/manage-processes']);
         break;
       default:
         this.router.navigate(['/public']);
