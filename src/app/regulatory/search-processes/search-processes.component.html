@@ -1,0 +1,106 @@
+<p>search-processes works!</p>
+<app-navbar></app-navbar>
+<div class="container-fluid pt-4 px-4">
+  <h4>Ver Trámites</h4>
+  <div class="bg-form rounded h-100 p-4">
+    <div class="row">
+      <div class="col-md-6">
+        <label for="cliente">Cliente</label>
+        <select [(ngModel)]="selectedCliente" class="form-select">
+          <option *ngFor="let client of clients" [value]="client">{{ client }}</option>
+        </select>
+      </div>
+      <div class="col-md-6" *ngIf="selectedCliente">
+        <label for="status">Estatus</label>
+        <select [(ngModel)]="selectedStatus" class="form-select" (change)="filterByStatus()">
+          <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn btn-primary mt-3" (click)="loadProcesses()">
+      <i class="bi bi-search"></i> Buscar Trámites
+    </button>
+    <button class="btn btn-outline-secondary mt-3 ms-3" (click)="resetFilters()">Limpiar Filtros</button>
+    <div class="mt-4">
+      <h6>Mostrar/Ocultar Columnas</h6>
+      <div class="row">
+        <div class="col-md-3" *ngFor="let column of getColumnKeys()">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" [(ngModel)]="columns[column]" id="checkbox-{{column}}" />
+            <label class="ms-2" [for]="'checkbox-' + column">{{ columnNames[column] }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="table-responsive mt-4">
+    <table class="table table-striped table-hover">
+      <thead class="table-dark text-nowrap">
+        <tr>
+          <th scope="col" *ngIf="columns['number']">No.</th>
+          <th scope="col" *ngIf="columns['id']">Id Tramite</th>
+          <th scope="col" *ngIf="columns['client_rfc']">RFC Cliente</th>
+          <th scope="col" *ngIf="columns['email']">Email</th>
+          <th scope="col" *ngIf="columns['phone_number']">Teléfono</th>
+          <th scope="col" *ngIf="columns['distinctive_denomination']">Denominación Distintiva</th>
+          <th scope="col" *ngIf="columns['generic_name']">Nombre Genérico</th>
+          <th scope="col" *ngIf="columns['product_manufacturer']">Fabricante</th>
+          <th scope="col" *ngIf="columns['service_name']">Servicio</th>
+          <th scope="col" *ngIf="columns['input_value']">Insumo</th>
+          <th scope="col" *ngIf="columns['type_description']">Descripción Tipo</th>
+          <th scope="col" *ngIf="columns['class_name']">Clase</th>
+          <th scope="col" *ngIf="columns['start_date']">Fecha Inicio</th>
+          <th scope="col" *ngIf="columns['end_date']">Fecha Fin</th>
+          <th scope="col" *ngIf="columns['status']">Estatus</th>
+          <th scope="col" *ngIf="columns['technical_data']" class="scroll-column">Datos Técnicos</th>
+          <th scope="col" *ngIf="columns['completion_percentage']">% Completado</th>
+          <th scope="col" *ngIf="columns['cofepris_entry_date']">Fecha Entrada COFEPRIS</th>
+          <th scope="col" *ngIf="columns['cofepris_status']">Estatus COFEPRIS</th>
+          <th scope="col" *ngIf="columns['cofepris_entry_number']">Número de Entrada COFEPRIS</th>
+          <th scope="col" *ngIf="columns['cofepris_status_health_registration_number']">Registro Sanitario COFEPRIS</th>
+          <th scope="col" *ngIf="columns['cofepris_status_registrer_number']">Número de respuesta COFEPRIS</th>
+          <th scope="col" *ngIf="columns['cofepris_status_prevention_response']">Fecha Respuesta Prevención COFEPRIS</th>
+          <th scope="col" *ngIf="columns['assigned_consultant']">Consultor Asignado</th>
+          <th scope="col" *ngIf="columns['additional_information']" class="scroll-column">Información Adicional</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tramite of tramites" (click)="viewDetails(tramite.id)" style="cursor: pointer;">
+          <td *ngIf="columns['number']">{{ tramite.number }}</td>
+          <td *ngIf="columns['id']">{{ tramite.id }}</td>
+          <td *ngIf="columns['client_rfc']">{{ tramite.client_rfc }}</td>
+          <td *ngIf="columns['email']">{{ tramite.client.email }}</td>
+          <td *ngIf="columns['phone_number']">{{ tramite.client.phone_number }}</td>
+          <td *ngIf="columns['distinctive_denomination']">{{ tramite.distinctive_denomination }}</td>
+          <td *ngIf="columns['generic_name']">{{ tramite.generic_name }}</td>
+          <td *ngIf="columns['product_manufacturer']">{{ tramite.product_manufacturer }}</td>
+          <td *ngIf="columns['service_name']">{{ tramite.service_name }}</td>
+          <td *ngIf="columns['input_value']">{{ tramite.input_value }}</td>
+          <td *ngIf="columns['type_description']">{{ tramite.type_description }}</td>
+          <td *ngIf="columns['class_name']">{{ tramite.class_name }}</td>
+          <td *ngIf="columns['start_date']">{{ tramite.start_date }}</td>
+          <td *ngIf="columns['end_date']">{{ tramite.end_date }}</td>
+          <td *ngIf="columns['status']">{{ tramite.status }}</td>
+          <td *ngIf="columns['technical_data']">
+            <div class="scroll-content">{{ tramite.technical_data }}</div>
+          </td>
+          <td *ngIf="columns['completion_percentage']">{{ tramite.completion_percentage }}</td>
+          <td *ngIf="columns['cofepris_entry_date']">{{ tramite.cofepris_entry_date }}</td>
+          <td *ngIf="columns['cofepris_status']">{{ tramite.cofepris_status }}</td>
+          <td *ngIf="columns['cofepris_entry_number']">
+            <a [href]="tramite.cofepris_link" target="_blank">{{ tramite.cofepris_entry_number }}</a>
+          </td>
+          <td scope="col" *ngIf="columns['cofepris_status_health_registration_number']">{{ tramite.cofepris_status_health_registration_number }}</td>
+          <td scope="col" *ngIf="columns['cofepris_status_registrer_number']">{{ tramite.cofepris_status_registrer_number }}</td>
+          <td scope="col" *ngIf="columns['cofepris_status_prevention_response']">{{ tramite.cofepris_status_prevention_response }}</td>
+          <td *ngIf="columns['assigned_consultant']">{{ tramite.assigned_consultant }}</td>
+          <td *ngIf="columns['additional_information']">
+            <div class="scroll-content">{{ tramite.additional_information }}</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
