@@ -25,6 +25,7 @@ export class BillingDashboardComponent implements OnInit {
     generic_name: true,
     product_manufacturer: true,
     service_name: true,
+    sub_service_name: true,
     input_value: true,
     type_description: true,
     class_name: true,
