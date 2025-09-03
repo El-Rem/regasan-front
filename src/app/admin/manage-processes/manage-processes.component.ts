@@ -20,6 +20,44 @@ export class ManageProcessesComponent implements OnInit {
   serviceIsOther: boolean = false;
   selectedClientName: string = '';
 
+  private readonly dossierOptions: string[] = [
+    'FDA',
+    'INDRE',
+    'Respuesta a prevención',
+    'Respuesta de dossier',
+    'Dispositivos médicos',
+    'Medicamento genérico',
+    'Molécula nueva',
+    'Plaguicida',
+    'Remedio herbolario',
+    'Tecnovigilancia',
+    'Licencia Sanitaria',
+    'NA'
+  ];
+
+  private readonly consultoriaOptions: string[] = [
+    'Aviso de Funcionamiento',
+    'Escrito libre',
+    'Revisión de etiqueta',
+    'Permiso de Importación',
+    'GMP',
+    'Sometimiento a Cofepris',
+    'Horas de consultoría',
+    'Permiso de construcción',
+    'Publicidad',
+    'Suplemento Alimenticio',
+    'Consultoría',
+    'NA'
+  ];
+
+  serviceIsOtherCreate = false;
+  showSubServiceCreate = false;
+  subServiceOptionsCreate: string[] = [];
+
+  serviceIsOtherUpdate = false;
+  showSubServiceUpdate = false;
+  subServiceOptionsUpdate: string[] = [];
+
   constructor(
     private clientService: ClientService,
     private processesService: ProcessesService,
@@ -33,6 +71,7 @@ export class ManageProcessesComponent implements OnInit {
       generic_name: ['', Validators.required],
       product_manufacturer: ['', Validators.required],
       service_name: ['', Validators.required],
+      sub_service_name: [''],
       other_service: [''],
       input_value: ['', Validators.required],
       type_description: ['', Validators.required],
@@ -52,6 +91,7 @@ export class ManageProcessesComponent implements OnInit {
       generic_name: ['', Validators.required],
       product_manufacturer: ['', Validators.required],
       service_name: ['', Validators.required],
+      sub_service_name: [''],
       other_service: [''],
       input_value: ['', Validators.required],
       type_description: ['', Validators.required],
@@ -119,9 +159,40 @@ export class ManageProcessesComponent implements OnInit {
     });
   }
 
-  onServiceChange(event: any) {
-    const value = event.target.value;
-    this.serviceIsOther = value === 'Otro';
+  onServiceChange(event: any, formType: 'create' | 'update') {
+    const value: string = event.target.value;
+
+    const form = formType === 'create' ? this.processForm : this.updateProcessForm;
+
+    form.patchValue({
+      sub_service_name: null,
+      other_service: ''
+    });
+
+    const setState = (isOther: boolean, showSub: boolean, options: string[]) => {
+      if (formType === 'create') {
+        this.serviceIsOtherCreate = isOther;
+        this.showSubServiceCreate = showSub;
+        this.subServiceOptionsCreate = options;
+      } else {
+        this.serviceIsOtherUpdate = isOther;
+        this.showSubServiceUpdate = showSub;
+        this.subServiceOptionsUpdate = options;
+      }
+    };
+
+    if (value === 'Armado de Dossier') {
+      setState(false, true, this.dossierOptions);
+      form.get('other_service')?.setValue('');
+    } else if (value === 'Consultoría') {
+      setState(false, true, this.consultoriaOptions);
+      form.get('other_service')?.setValue('');
+    } else if (value === 'Otro') {
+      setState(true, false, []);
+      form.get('sub_service_name')?.setValue(null);
+    } else {
+      setState(false, false, []);
+    }
   }
 
   onClientChange(event: any) {
@@ -320,12 +391,12 @@ onTramiteChange(event: any) {
   if (tramiteId) {
     this.processesService.getProcesses(tramiteId).subscribe({
       next: (response) => {
-        console.log('Datos del trámite:', response);
         this.updateProcessForm.patchValue({
           distinctive_denomination: response.distinctive_denomination,
           generic_name: response.generic_name,
           product_manufacturer: response.product_manufacturer,
           service_name: response.service_name,
+          sub_service_name: response.sub_service_name,
           other_service: response.other_service,
           input_value: response.input_value,
           type_description: response.type_description,
@@ -345,8 +416,13 @@ onTramiteChange(event: any) {
           assigned_consultant: response.assigned_consultant,
           additional_information: response.additional_information
         });
+
+        // Ajusta visibilidad/opciones del sub-servicio según el valor cargado
+        const svc = response.service_name;
+        const fakeEvent = { target: { value: svc } };
+        this.onServiceChange(fakeEvent, 'update');
       },
-      error: (error) => {
+      error: () => {
         Swal.fire({
           icon: 'error',
           title: 'Error al cargar trámite',
