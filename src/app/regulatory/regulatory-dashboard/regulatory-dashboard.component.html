@@ -31,38 +31,78 @@
             <input formControlName="product_manufacturer" type="text" class="form-control" id="fabricante" required>
           </div>
           <div class="mb-3">
-            <label for="servicio" class="form-label">Servicio</label>
-            <select formControlName="service_name" class="form-select" id="servicio" (change)="onServiceChange($event)">
+            <label for="servicioCreate" class="form-label">Servicio</label>
+            <select formControlName="service_name"
+                    class="form-select"
+                    id="servicioCreate"
+                    (change)="onServiceChange($event, 'create')">
               <option value="Armado de Dossier">Armado de Dossier</option>
-              <option value="Consultoria">Consultoria</option>
+              <option value="Consultoría">Consultoría</option>
               <option value="Otro">Otro</option>
             </select>
-            <div *ngIf="serviceIsOther">
+
+            <!-- Sub-servicio cuando el servicio no es 'Otro' -->
+            <div *ngIf="showSubServiceCreate" class="mt-2">
+              <label for="subservicioCreate" class="form-label">Sub-servicio</label>
+              <select formControlName="sub_service_name" class="form-select" id="subservicioCreate">
+                <option *ngFor="let opt of subServiceOptionsCreate" [value]="opt">{{ opt }}</option>
+              </select>
+            </div>
+
+            <!-- Campo 'otro' cuando el servicio es 'Otro' -->
+            <div *ngIf="serviceIsOtherCreate">
               <input formControlName="other_service" type="text" class="form-control mt-2" placeholder="Especificar otro servicio">
             </div>
           </div>
           <div class="mb-3">
             <label for="insumo" class="form-label">Insumo</label>
             <select formControlName="input_value" class="form-select" id="insumo">
-              <option value="Dispositivo Medico">Dispositivo Medico</option>
-              <option value="Medicamento Generico">Medicamento Generico</option>
+              <option value="Alimentos">Alimentos</option>
+              <option value="Aviso de Funcionamiento">Aviso de Funcionamiento</option>
+              <option value="Dispositivo Médico">Dispositivo Médico</option>
+              <option value="Escrito Libre">Escrito Libre</option>
+              <option value="Hrs de Consultoria">Hrs de Consultoria</option>
+              <option value="INDRE">INDRE</option>
+              <option value="Licencia Sanitaria">Licencia Sanitaria</option>
+              <option value="Medicamento Genérico">Medicamento Genérico</option>
               <option value="NA">NA</option>
-              <option value="Permiso de importacion">Permiso de importacion</option>
+              <option value="NYCE">NYCE</option>
+              <option value="Permiso Construcción">Permiso Construcción</option>
+              <option value="Plaguicida">Plaguicida</option>
+              <option value="PNOs">PNOs</option>
+              <option value="Publicidad">Publicidad</option>
+              <option value="Remedio Herbolario">Remedio Herbolario</option>
+              <option value="Suplemento Alimenticio">Suplemento Alimenticio</option>
               <option value="Tecno-Vigilancia">Tecno-Vigilancia</option>
-              <option value="Molecula Nueva">Molecula Nueva</option>
             </select>
           </div>
           <div class="mb-3">
             <label for="tipo" class="form-label">Tipo</label>
             <select formControlName="type_description" class="form-select" id="tipo">
-              <option value="Consultoria">Consultoria</option>
+              <option value="RN">RN</option>
               <option value="MA">MA</option>
               <option value="MT">MT</option>
-              <option value="NA">NA</option>
               <option value="PRO">PRO</option>
+              <option value="CD">CD</option>
+              <option value="CI">CI</option>
+              <option value="IT">IT</option>
+              <option value="ALTA IT">ALTA IT</option>
+              <option value="RN Equivalencias">RN Equivalencias</option>
+              <option value="RN Equivalencias ARR">RN Equivalencias ARR</option>
+              <option value="AP">AP</option>
+              <option value="PM">PM</option>
+              <option value="Alta AF">Alta AF</option>
+              <option value="Baja o Mod. AF">Baja o Mod. AF</option>
+              <option value="CC">CC</option>
               <option value="PSI">PSI</option>
-              <option value="RN">RN</option>
-              <option value="RN-FDA">RN-FDA</option>
+              <option value="PSI prórroga o modificación">PSI prórroga o modificación</option>
+              <option value="Respuesta a Prevención">Respuesta a Prevención</option>
+              <option value="Revisión de Dossier">Revisión de Dossier</option>
+              <option value="Revisión de etiqueta">Revisión de etiqueta</option>
+              <option value="Revisión de fórmula">Revisión de fórmula</option>
+              <option value="Formulación y etiquetado">Formulación y etiquetado</option>
+              <option value="Otro">Otro</option>
+              <option value="NA">NA</option>
             </select>
           </div>
           <div class="mb-3">
@@ -89,6 +129,7 @@
             <select formControlName="status" class="form-select" id="estatus">
               <option value="Pendiente">Pendiente</option>
               <option value="En Proceso">En Proceso</option>
+              <option value="Finalizado">Pausado</option>
               <option value="Finalizado">Finalizado</option>
               <option value="Cancelado">Cancelado</option>
             </select>
@@ -148,38 +189,78 @@
             <input formControlName="product_manufacturer" type="text" class="form-control" id="fabricante" required>
           </div>
           <div class="mb-3">
-            <label for="servicio" class="form-label">Servicio</label>
-            <select formControlName="service_name" class="form-select" id="servicio" (change)="onServiceChange($event)">
+            <label for="servicioUpdate" class="form-label">Servicio</label>
+            <select formControlName="service_name"
+                    class="form-select"
+                    id="servicioUpdate"
+                    (change)="onServiceChange($event, 'update')">
               <option value="Armado de Dossier">Armado de Dossier</option>
-              <option value="Consultoria">Consultoria</option>
+              <option value="Consultoría">Consultoría</option>
               <option value="Otro">Otro</option>
             </select>
-            <div *ngIf="serviceIsOther">
+
+            <!-- Sub-servicio cuando el servicio no es 'Otro' -->
+            <div *ngIf="showSubServiceUpdate" class="mt-2">
+              <label for="subservicioUpdate" class="form-label">Sub-servicio</label>
+              <select formControlName="sub_service_name" class="form-select" id="subservicioUpdate">
+                <option *ngFor="let opt of subServiceOptionsUpdate" [value]="opt">{{ opt }}</option>
+              </select>
+            </div>
+
+            <!-- Campo 'otro' cuando el servicio es 'Otro' -->
+            <div *ngIf="serviceIsOtherUpdate">
               <input formControlName="other_service" type="text" class="form-control mt-2" placeholder="Especificar otro servicio">
             </div>
           </div>
           <div class="mb-3">
             <label for="insumo" class="form-label">Insumo</label>
             <select formControlName="input_value" class="form-select" id="insumo">
-              <option value="Dispositivo Medico">Dispositivo Medico</option>
-              <option value="Medicamento Generico">Medicamento Generico</option>
+              <option value="Alimentos">Alimentos</option>
+              <option value="Aviso de Funcionamiento">Aviso de Funcionamiento</option>
+              <option value="Dispositivo Médico">Dispositivo Médico</option>
+              <option value="Escrito Libre">Escrito Libre</option>
+              <option value="Hrs de Consultoria">Hrs de Consultoria</option>
+              <option value="INDRE">INDRE</option>
+              <option value="Licencia Sanitaria">Licencia Sanitaria</option>
+              <option value="Medicamento Genérico">Medicamento Genérico</option>
               <option value="NA">NA</option>
-              <option value="Permiso de importacion">Permiso de importacion</option>
+              <option value="NYCE">NYCE</option>
+              <option value="Permiso Construcción">Permiso Construcción</option>
+              <option value="Plaguicida">Plaguicida</option>
+              <option value="PNOs">PNOs</option>
+              <option value="Publicidad">Publicidad</option>
+              <option value="Remedio Herbolario">Remedio Herbolario</option>
+              <option value="Suplemento Alimenticio">Suplemento Alimenticio</option>
               <option value="Tecno-Vigilancia">Tecno-Vigilancia</option>
-              <option value="Molecula Nueva">Molecula Nueva</option>
             </select>
           </div>
           <div class="mb-3">
             <label for="tipo" class="form-label">Tipo</label>
             <select formControlName="type_description" class="form-select" id="tipo">
-              <option value="Consultoria">Consultoria</option>
+              <option value="RN">RN</option>
               <option value="MA">MA</option>
               <option value="MT">MT</option>
-              <option value="NA">NA</option>
               <option value="PRO">PRO</option>
+              <option value="CD">CD</option>
+              <option value="CI">CI</option>
+              <option value="IT">IT</option>
+              <option value="ALTA IT">ALTA IT</option>
+              <option value="RN Equivalencias">RN Equivalencias</option>
+              <option value="RN Equivalencias ARR">RN Equivalencias ARR</option>
+              <option value="AP">AP</option>
+              <option value="PM">PM</option>
+              <option value="Alta AF">Alta AF</option>
+              <option value="Baja o Mod. AF">Baja o Mod. AF</option>
+              <option value="CC">CC</option>
               <option value="PSI">PSI</option>
-              <option value="RN">RN</option>
-              <option value="RN-FDA">RN-FDA</option>
+              <option value="PSI prórroga o modificación">PSI prórroga o modificación</option>
+              <option value="Respuesta a Prevención">Respuesta a Prevención</option>
+              <option value="Revisión de Dossier">Revisión de Dossier</option>
+              <option value="Revisión de etiqueta">Revisión de etiqueta</option>
+              <option value="Revisión de fórmula">Revisión de fórmula</option>
+              <option value="Formulación y etiquetado">Formulación y etiquetado</option>
+              <option value="Otro">Otro</option>
+              <option value="NA">NA</option>
             </select>
           </div>
           <div class="mb-3">
@@ -210,6 +291,7 @@
             <select formControlName="status" class="form-select" id="estatus">
               <option value="Pendiente">Pendiente</option>
               <option value="En Proceso">En Proceso</option>
+              <option value="Pausado">Pausado</option>
               <option value="Finalizado">Finalizado</option>
               <option value="Cancelado">Cancelado</option>
             </select>
@@ -303,6 +385,6 @@
         </form>
       </div>
     </div>
-    -->
+  -->
   </div>
 </div>

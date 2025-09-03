@@ -48,6 +48,7 @@
           <th scope="col" *ngIf="columns['generic_name']">Nombre Genérico</th>
           <th scope="col" *ngIf="columns['product_manufacturer']">Fabricante</th>
           <th scope="col" *ngIf="columns['service_name']">Servicio</th>
+          <th scope="col" *ngIf="columns['sub_service_name']">Sub Servicio</th>
           <th scope="col" *ngIf="columns['input_value']">Insumo</th>
           <th scope="col" *ngIf="columns['type_description']">Descripción Tipo</th>
           <th scope="col" *ngIf="columns['class_name']">Clase</th>
@@ -77,6 +78,7 @@
           <td *ngIf="columns['generic_name']">{{ tramite.generic_name }}</td>
           <td *ngIf="columns['product_manufacturer']">{{ tramite.product_manufacturer }}</td>
           <td *ngIf="columns['service_name']">{{ tramite.service_name }}</td>
+          <td *ngIf="columns['sub_service_name']">{{ tramite.sub_service_name }}</td>
           <td *ngIf="columns['input_value']">{{ tramite.input_value }}</td>
           <td *ngIf="columns['type_description']">{{ tramite.type_description }}</td>
           <td *ngIf="columns['class_name']">{{ tramite.class_name }}</td>
