@@ -149,11 +149,16 @@ export class SearchProcessesComponent implements OnInit {
   }
 
   filterByStatus(): void {
-    if (this.selectedStatus === 'Todos') {
+    const selected = this.normalize(this.selectedStatus); // ‘cancelado’ sin importar cómo lo eligió
+    if (selected === 'todos') {
       this.tramites = [...this.allTramites];
-    } else {
-      this.tramites = this.allTramites.filter((tramite: any) => tramite.status === this.selectedStatus);
+      return;
     }
+    this.tramites = this.allTramites.filter((t: any) => {
+      const s1 = this.toCanonicalStatus(t?.status);
+      const s2 = this.toCanonicalStatus(t?.cofepris_status);
+      return s1 === selected || s2 === selected;
+    });
   }
 
 
@@ -187,4 +192,23 @@ export class SearchProcessesComponent implements OnInit {
       localStorage.removeItem('tramites-scroll'); // Limpia para evitar que se aplique al navegar normal
     }
   }
+
+  private normalize(value: any): string {
+    return (value ?? '')
+      .toString()
+      .trim()
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/\p{Diacritic}/gu, '');
+  }
+
+  private toCanonicalStatus(statusBackend: string): string {
+    const s = this.normalize(statusBackend);
+    if (['pendiente','pending'].includes(s)) return 'pendiente';
+    if (['en proceso','enproceso','in progress','proceso'].includes(s)) return 'en proceso';
+    if (['finalizado','finalizada','completed','completado'].includes(s)) return 'finalizado';
+    if (['cancelado','cancelada','canceled'].includes(s)) return 'cancelado';
+    return s;
+  }
+
 }
