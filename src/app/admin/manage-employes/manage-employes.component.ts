@@ -241,8 +241,8 @@ export class ManageEmployesComponent {
       error: (error) => {
         Swal.fire({
           icon: 'error',
-          title: 'Error al cargar empleados',
-          text: 'No se pudieron cargar los empleados. Por favor, inténtalo nuevamente.',
+          title: 'Error al cargar usuarios',
+          text: 'No se pudieron cargar los usuarios. Por favor, inténtalo nuevamente.',
           confirmButtonText: 'Aceptar',
           allowOutsideClick: false
         });

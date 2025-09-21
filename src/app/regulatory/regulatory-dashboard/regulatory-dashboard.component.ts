@@ -135,8 +135,8 @@ export class RegulatoryDashboardComponent implements OnInit {
       error: () => {
         Swal.fire({
           icon: 'error',
-          title: 'Error al cargar empleados',
-          text: 'No se pudieron cargar los empleados.',
+          title: 'Error al cargar usuarios',
+          text: 'No se pudieron cargar los usuarios.',
           confirmButtonText: 'Aceptar'
         });
       }
