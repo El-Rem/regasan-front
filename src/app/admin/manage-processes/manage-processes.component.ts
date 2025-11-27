@@ -66,7 +66,7 @@ export class ManageProcessesComponent implements OnInit {
   ) {
     this.processForm = this.fb.group({
       client_rfc: ['', Validators.required],
-      tramite_id: ['', Validators.required],
+      id: ['', Validators.required],
       distinctive_denomination: ['', Validators.required],
       generic_name: ['', Validators.required],
       product_manufacturer: ['', Validators.required],
