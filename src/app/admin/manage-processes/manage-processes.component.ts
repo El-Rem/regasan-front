@@ -86,7 +86,7 @@ export class ManageProcessesComponent implements OnInit {
 
     this.updateProcessForm = this.fb.group({
       client_rfc: ['', Validators.required],
-      tramite_id: ['', Validators.required],
+      id: ['', Validators.required],
       distinctive_denomination: ['', Validators.required],
       generic_name: ['', Validators.required],
       product_manufacturer: ['', Validators.required],
@@ -114,7 +114,7 @@ export class ManageProcessesComponent implements OnInit {
 
     this.deleteProcessForm = this.fb.group({
       client_rfc: ['', Validators.required],
-      tramite_id: ['', Validators.required]
+      id: ['', Validators.required]
     });
   }
 
@@ -227,7 +227,7 @@ export class ManageProcessesComponent implements OnInit {
 
   // Método para eliminar un trámite por ID
   deleteProcess() {
-    const tramiteId = this.deleteProcessForm.get('tramite_id')?.value;
+    const tramiteId = this.deleteProcessForm.get('id')?.value;
 
     if (tramiteId) {
       this.processesService.deleteProcess(tramiteId).subscribe({
@@ -328,7 +328,7 @@ export class ManageProcessesComponent implements OnInit {
 
   updateProcess() {
     if (this.updateProcessForm.valid) {
-      const tramiteId = this.updateProcessForm.get('tramite_id')?.value;
+      const tramiteId = this.updateProcessForm.get('id')?.value;
       const updatedProcessData = this.updateProcessForm.value;
 
       Swal.fire({

@@ -171,7 +171,7 @@
           </div>
           <div class="mb-3" *ngIf="tramites.length > 0">
             <label for="tramiteId" class="form-label">Trámite</label>
-            <select formControlName="tramite_id" class="form-select" id="tramiteId" (change)="onTramiteChange($event)">
+            <select formControlName="id" class="form-select" id="tramiteId" (change)="onTramiteChange($event)">
               <option *ngFor="let tramite of tramites" [value]="tramite.id">{{ tramite.id }}</option>
             </select>
           </div>
@@ -377,7 +377,7 @@
           </div>
           <div class="mb-3" *ngIf="tramites.length > 0">
             <label for="tramiteIdEliminar" class="form-label">Trámite</label>
-            <select formControlName="tramite_id" class="form-select" id="tramiteIdEliminar">
+            <select formControlName="id" class="form-select" id="tramiteIdEliminar">
               <option *ngFor="let tramite of tramites" [value]="tramite.id">{{ tramite.id }}</option>
             </select>
           </div>
