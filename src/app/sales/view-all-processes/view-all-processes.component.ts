@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProcessesService } from 'src/app/services/processes.service';
 import Swal from 'sweetalert2';
 
@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
   templateUrl: './view-all-processes.component.html',
   styleUrls: ['./view-all-processes.component.css']
 })
-export class ViewAllProcessesComponent {
+export class ViewAllProcessesComponent implements OnInit {
   tramites: any[] = [];
 
   columns: { [key: string]: boolean } = {
@@ -62,29 +62,47 @@ export class ViewAllProcessesComponent {
     additional_information: 'Información Adicional',
   };
 
+  allColumnsSelected: boolean = true;
+
   constructor(private processesService: ProcessesService) {}
 
   ngOnInit(): void {
     this.getProcesses();
+    this.allColumnsSelected = this.areAllColumnsSelected();
   }
-  getProcesses() {
+
+  getProcesses(): void {
     this.processesService.getAllProcesses().subscribe({
-          next: (response) => {
-            this.tramites = response;
-          },
-          error: () => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Error al cargar trámites',
-              text: 'No se pudieron cargar los trámites. Por favor, inténtalo nuevamente.',
-              confirmButtonText: 'Aceptar',
-              allowOutsideClick: false
-            });
-          }
+      next: (response) => {
+        this.tramites = response;
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al cargar trámites',
+          text: 'No se pudieron cargar los trámites. Por favor, inténtalo nuevamente.',
+          confirmButtonText: 'Aceptar',
+          allowOutsideClick: false
         });
+      }
+    });
   }
 
   getColumnKeys() {
     return Object.keys(this.columns);
+  }
+
+  toggleAllColumns(): void {
+    Object.keys(this.columns).forEach((key) => {
+      this.columns[key] = this.allColumnsSelected;
+    });
+  }
+
+  onColumnChange(): void {
+    this.allColumnsSelected = this.areAllColumnsSelected();
+  }
+
+  private areAllColumnsSelected(): boolean {
+    return Object.values(this.columns).every((value) => value === true);
   }
 }

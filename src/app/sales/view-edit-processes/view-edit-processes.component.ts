@@ -67,10 +67,16 @@ export class ViewEditProcessesComponent implements OnInit {
     additional_information: 'Información Adicional',
   };
 
-  constructor(private clientService: ClientService, private processesService: ProcessesService) {}
+  allColumnsSelected: boolean = true;
+
+  constructor(
+    private clientService: ClientService,
+    private processesService: ProcessesService
+  ) {}
 
   ngOnInit(): void {
     this.loadClients();
+    this.allColumnsSelected = this.areAllColumnsSelected();
   }
 
   loadClients(): void {
@@ -100,7 +106,6 @@ export class ViewEditProcessesComponent implements OnInit {
 
     this.processesService.getProcesses(param).subscribe({
       next: (response) => {
-        // Filtramos los trámites que tienen sales_flag = false
         this.tramites = response.filter((tramite: any) => !tramite.sales_flag);
       },
       error: () => {
@@ -117,5 +122,19 @@ export class ViewEditProcessesComponent implements OnInit {
 
   getColumnKeys() {
     return Object.keys(this.columns);
+  }
+
+  toggleAllColumns(): void {
+    Object.keys(this.columns).forEach((key) => {
+      this.columns[key] = this.allColumnsSelected;
+    });
+  }
+
+  onColumnChange(): void {
+    this.allColumnsSelected = this.areAllColumnsSelected();
+  }
+
+  private areAllColumnsSelected(): boolean {
+    return Object.values(this.columns).every((value) => value === true);
   }
 }

@@ -75,7 +75,13 @@ export class SearchProcessesComponent implements OnInit {
     additional_information: 'Información Adicional',
   };
 
-  constructor(private clientService: ClientService, private processesService: ProcessesService, private router: Router) {}
+  allColumnsSelected: boolean = true;
+
+  constructor(
+    private clientService: ClientService,
+    private processesService: ProcessesService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     const filtroCliente = localStorage.getItem('tramites-filtro-cliente');
@@ -86,6 +92,8 @@ export class SearchProcessesComponent implements OnInit {
 
     this.loadClients();
     this.loadProcesses();
+
+    this.allColumnsSelected = this.areAllColumnsSelected();
   }
 
   loadClients(): void {
@@ -94,7 +102,7 @@ export class SearchProcessesComponent implements OnInit {
         const nombres = response.map((client: any) => client.business_name);
         this.clients = ['Todos', ...nombres]; // Agrega 'Todos' al inicio
       },
-      error: (error) => {
+      error: () => {
         Swal.fire({
           icon: 'error',
           title: 'Error al cargar clientes',
@@ -161,7 +169,6 @@ export class SearchProcessesComponent implements OnInit {
     });
   }
 
-
   getColumnKeys() {
     return Object.keys(this.columns);
   }
@@ -175,7 +182,6 @@ export class SearchProcessesComponent implements OnInit {
 
     this.router.navigate(['/regulatory/tramite-detalle', id]);
   }
-
 
   resetFilters(): void {
     this.selectedCliente = 'Todos';
@@ -209,5 +215,19 @@ export class SearchProcessesComponent implements OnInit {
     if (['finalizado','finalizada','completed','completado'].includes(s)) return 'finalizado';
     if (['cancelado','cancelada','canceled'].includes(s)) return 'cancelado';
     return s;
+  }
+
+  toggleAllColumns(): void {
+    Object.keys(this.columns).forEach((key) => {
+      this.columns[key] = this.allColumnsSelected;
+    });
+  }
+
+  onColumnChange(): void {
+    this.allColumnsSelected = this.areAllColumnsSelected();
+  }
+
+  private areAllColumnsSelected(): boolean {
+    return Object.values(this.columns).every((value) => value === true);
   }
 }

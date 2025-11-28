@@ -56,7 +56,7 @@ export class SearchProcessesComponent implements OnInit {
     generic_name: 'Nombre Genérico',
     product_manufacturer: 'Fabricante',
     service_name: 'Servicio',
-    sub_service_name: 'Servicio',
+    sub_service_name: 'Sub Servicio',
     input_value: 'Insumo',
     type_description: 'Descripción Tipo',
     class_name: 'Clase',
@@ -75,7 +75,13 @@ export class SearchProcessesComponent implements OnInit {
     additional_information: 'Información Adicional',
   };
 
-  constructor(private clientService: ClientService, private processesService: ProcessesService, private router: Router) {}
+  allColumnsSelected: boolean = true;
+
+  constructor(
+    private clientService: ClientService,
+    private processesService: ProcessesService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     const filtroCliente = localStorage.getItem('tramites-filtro-cliente');
@@ -86,15 +92,17 @@ export class SearchProcessesComponent implements OnInit {
 
     this.loadClients();
     this.loadProcesses();
+
+    this.allColumnsSelected = this.areAllColumnsSelected();
   }
 
   loadClients(): void {
     this.clientService.getAllClients().subscribe({
       next: (response) => {
         const nombres = response.map((client: any) => client.business_name);
-        this.clients = ['Todos', ...nombres]; // Agrega 'Todos' al inicio
+        this.clients = ['Todos', ...nombres];
       },
-      error: (error) => {
+      error: () => {
         Swal.fire({
           icon: 'error',
           title: 'Error al cargar clientes',
@@ -112,7 +120,6 @@ export class SearchProcessesComponent implements OnInit {
         next: (response) => {
           this.allTramites = this.sortByNumberDesc(response);
           this.filterByStatus();
-
           setTimeout(() => this.restoreScroll(), 0);
         },
         error: () => {
@@ -129,7 +136,6 @@ export class SearchProcessesComponent implements OnInit {
         next: (response) => {
           this.allTramites = this.sortByNumberDesc(response);
           this.filterByStatus();
-
           setTimeout(() => this.restoreScroll(), 0);
         },
         error: () => {
@@ -149,7 +155,7 @@ export class SearchProcessesComponent implements OnInit {
   }
 
   filterByStatus(): void {
-    const selected = this.normalize(this.selectedStatus); // ‘cancelado’ sin importar cómo lo eligió
+    const selected = this.normalize(this.selectedStatus);
     if (selected === 'todos') {
       this.tramites = [...this.allTramites];
       return;
@@ -160,7 +166,6 @@ export class SearchProcessesComponent implements OnInit {
       return s1 === selected || s2 === selected;
     });
   }
-
 
   getColumnKeys() {
     return Object.keys(this.columns);
@@ -176,7 +181,6 @@ export class SearchProcessesComponent implements OnInit {
     this.router.navigate(['/admin/tramite-detalle', id]);
   }
 
-
   resetFilters(): void {
     this.selectedCliente = 'Todos';
     this.selectedStatus = 'Todos';
@@ -189,7 +193,7 @@ export class SearchProcessesComponent implements OnInit {
     const scrollValue = localStorage.getItem('tramites-scroll');
     if (scrollValue) {
       window.scrollTo({ top: parseInt(scrollValue, 10), behavior: 'auto' });
-      localStorage.removeItem('tramites-scroll'); // Limpia para evitar que se aplique al navegar normal
+      localStorage.removeItem('tramites-scroll');
     }
   }
 
@@ -204,11 +208,24 @@ export class SearchProcessesComponent implements OnInit {
 
   private toCanonicalStatus(statusBackend: string): string {
     const s = this.normalize(statusBackend);
-    if (['pendiente','pending'].includes(s)) return 'pendiente';
-    if (['en proceso','enproceso','in progress','proceso'].includes(s)) return 'en proceso';
-    if (['finalizado','finalizada','completed','completado'].includes(s)) return 'finalizado';
-    if (['cancelado','cancelada','canceled'].includes(s)) return 'cancelado';
+    if (['pendiente', 'pending'].includes(s)) return 'pendiente';
+    if (['en proceso', 'enproceso', 'in progress', 'proceso'].includes(s)) return 'en proceso';
+    if (['finalizado', 'finalizada', 'completed', 'completado'].includes(s)) return 'finalizado';
+    if (['cancelado', 'cancelada', 'canceled'].includes(s)) return 'cancelado';
     return s;
   }
 
+  toggleAllColumns(): void {
+    Object.keys(this.columns).forEach((key) => {
+      this.columns[key] = this.allColumnsSelected;
+    });
+  }
+
+  onColumnChange(): void {
+    this.allColumnsSelected = this.areAllColumnsSelected();
+  }
+
+  private areAllColumnsSelected(): boolean {
+    return Object.values(this.columns).every((value) => value === true);
+  }
 }

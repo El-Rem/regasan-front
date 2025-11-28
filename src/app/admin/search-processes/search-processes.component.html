@@ -16,17 +16,41 @@
         </select>
       </div>
     </div>
+
     <button class="btn btn-primary mt-3" (click)="loadProcesses()">
       <i class="bi bi-search"></i> Buscar Trámites
     </button>
     <button class="btn btn-outline-secondary mt-3 ms-3" (click)="resetFilters()">Limpiar Filtros</button>
+
     <div class="mt-4">
       <h6>Mostrar/Ocultar Columnas</h6>
+
+      <div class="form-check mb-2">
+        <input
+          type="checkbox"
+          class="form-check-input"
+          id="toggle-all-columns"
+          [(ngModel)]="allColumnsSelected"
+          (change)="toggleAllColumns()"
+        />
+        <label class="form-check-label ms-2" for="toggle-all-columns">
+          Activar / desactivar todas las columnas
+        </label>
+      </div>
+
       <div class="row">
         <div class="col-md-3" *ngFor="let column of getColumnKeys()">
           <div class="form-check">
-            <input type="checkbox" class="form-check-input" [(ngModel)]="columns[column]" id="checkbox-{{column}}" />
-            <label class="ms-2" [for]="'checkbox-' + column">{{ columnNames[column] }}</label>
+            <input
+              type="checkbox"
+              class="form-check-input"
+              [(ngModel)]="columns[column]"
+              (change)="onColumnChange()"
+              [id]="'checkbox-' + column"
+            />
+            <label class="ms-2" [for]="'checkbox-' + column">
+              {{ columnNames[column] }}
+            </label>
           </div>
         </div>
       </div>
@@ -93,9 +117,15 @@
           <td *ngIf="columns['cofepris_entry_number']">
             <a [href]="tramite.cofepris_link" target="_blank">{{ tramite.cofepris_entry_number }}</a>
           </td>
-          <td scope="col" *ngIf="columns['cofepris_status_health_registration_number']">{{ tramite.cofepris_status_health_registration_number }}</td>
-          <td scope="col" *ngIf="columns['cofepris_status_registrer_number']">{{ tramite.cofepris_status_registrer_number }}</td>
-          <td scope="col" *ngIf="columns['cofepris_status_prevention_response']">{{ tramite.cofepris_status_prevention_response }}</td>
+          <td scope="col" *ngIf="columns['cofepris_status_health_registration_number']">
+            {{ tramite.cofepris_status_health_registration_number }}
+          </td>
+          <td scope="col" *ngIf="columns['cofepris_status_registrer_number']">
+            {{ tramite.cofepris_status_registrer_number }}
+          </td>
+          <td scope="col" *ngIf="columns['cofepris_status_prevention_response']">
+            {{ tramite.cofepris_status_prevention_response }}
+          </td>
           <td *ngIf="columns['assigned_consultant']">{{ tramite.assigned_consultant }}</td>
           <td *ngIf="columns['additional_information']">
             <div class="scroll-content">{{ tramite.additional_information }}</div>
